@@ -1,12 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../screens/homescreen.dart';
 import '../screens/screen2.dart';
+import '../screens/using_bloc/bloc_screen1.dart';
+import '../screens/using_cubit/cubit_screen1.dart';
 
 class RouteManager {
   Route? onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
+      case BlocScreen.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const BlocScreen(),
+        );
+
+      case CubitScreen.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const CubitScreen(),
+        );
+
       case HomeScreen.routeName:
         return MaterialPageRoute(
           builder: (context) => const HomeScreen(),
