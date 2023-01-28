@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../business_logic/cubits/counter_cubit.dart';
+import 'package:flutter_bloc_dive2/business_logic/bloc/counter/counter_bloc.dart';
+import '../../../business_logic/bloc/counter/counter_bloc.dart';
 import '../screen2.dart';
 
 class BlocScreen extends StatefulWidget {
@@ -19,14 +20,16 @@ class _BlocScreenState extends State<BlocScreen> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: () => context.read<CounterCubit>().incrementCounter(),
+            onPressed: () =>
+                context.read<CounterBloc>().add(IncrementCounterEvent()),
             child: const Icon(Icons.add),
           ),
           const SizedBox(
             width: 5,
           ),
           FloatingActionButton(
-            onPressed: () => context.read<CounterCubit>().decrementCounter(),
+            onPressed: () =>
+                context.read<CounterBloc>().add(DecrementCounterEvent()),
             child: const Icon(Icons.remove),
           )
         ],
@@ -35,7 +38,7 @@ class _BlocScreenState extends State<BlocScreen> {
         title: const Text('Counter App using BLoc'),
       ),
       body: Center(
-        child: BlocConsumer<CounterCubit, CounterState>(
+        child: BlocConsumer<CounterBloc, CounterState>(
           listener: (context, state) {
             if (state.counterValue == 3) {
               final notification = SnackBar(
