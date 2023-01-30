@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../business_logic/bloc/theme/theme_bloc.dart';
+import '../../../constants/enums/apptheme.dart';
 
 class ThemeSwitcher extends StatefulWidget {
   const ThemeSwitcher({Key? key}) : super(key: key);
@@ -25,7 +26,11 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
                 ChangeThemeEvent(),
               );
         },
-        child: const Icon(Icons.recycling),
+        child: Icon(
+          context.watch<ThemeBloc>().state.theme == AppTheme.dark
+              ? Icons.dark_mode
+              : Icons.light_mode,
+        ),
       ),
       body: const Center(
         child: Text(
