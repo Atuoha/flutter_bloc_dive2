@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/bloc/counter/counter_bloc.dart';
-import 'package:flutter_bloc_dive2/business_logic/cubits/counter_cubit.dart';
+import 'package:flutter_bloc_dive2/business_logic/cubits/counter/counter_cubit.dart';
 import 'package:flutter_bloc_dive2/presentation/routes/route_manager.dart';
 
 import 'business_logic/bloc/theme/theme_bloc.dart';
+import 'business_logic/cubits/theme/theme_cubit.dart';
 import 'constants/enums/apptheme.dart';
 
 void main() => runApp(
@@ -28,9 +29,14 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ThemeBloc(),
-        )
+        ),
+        BlocProvider(
+          create: (context) => ThemeCubit(),
+        ),
       ],
-      child: BlocBuilder<ThemeBloc, ThemeState>(
+
+    //  child: BlocBuilder<ThemeBloc, ThemeState>(   //BLoC
+   child: BlocBuilder<ThemeCubit, CubitThemeState>(   //Cubit
         builder: (context, state) {
           return MaterialApp(
             theme: state.theme == AppTheme.dark
@@ -40,6 +46,7 @@ class MyApp extends StatelessWidget {
           );
         },
       ),
+
     );
   }
 }

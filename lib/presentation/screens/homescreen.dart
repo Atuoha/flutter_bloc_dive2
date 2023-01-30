@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/theme_switcher.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/using_cubit/theme_switcher.dart';
 import 'using_bloc/bloc_screen1.dart';
 import 'using_cubit/cubit_screen1.dart';
 
@@ -33,7 +34,12 @@ class HomeScreen extends StatelessWidget {
 
             GridItem(
               title: 'Bloc Theme',
-              routeName: ThemeSwitcher.routeName,
+              routeName: BlocThemeSwitcher.routeName,
+            ),
+
+            GridItem(
+              title: 'Cubit Theme',
+              routeName: CubitThemeSwitcher.routeName,
             ),
           ],
         ),

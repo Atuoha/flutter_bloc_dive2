@@ -2,30 +2,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../business_logic/bloc/theme/theme_bloc.dart';
+import '../../../business_logic/cubits/theme/theme_cubit.dart';
 import '../../../constants/enums/apptheme.dart';
 
-class BlocThemeSwitcher extends StatefulWidget {
-  const BlocThemeSwitcher({Key? key}) : super(key: key);
-  static const routeName = '/theme_screen_bloc';
+class CubitThemeSwitcher extends StatefulWidget {
+  const CubitThemeSwitcher({Key? key}) : super(key: key);
+  static const routeName = '/theme_screen_cubit';
 
   @override
-  State<BlocThemeSwitcher> createState() => _BlocThemeSwitcherState();
+  State<CubitThemeSwitcher> createState() => _CubitThemeSwitcherState();
 }
 
-class _BlocThemeSwitcherState extends State<BlocThemeSwitcher> {
+class _CubitThemeSwitcherState extends State<CubitThemeSwitcher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Bloc Theme Changer')),
+      appBar: AppBar(title: const Text('Cubit Theme Changer')),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // final randomInt = Random().nextInt(20);
-          context.read<ThemeBloc>().add(
-                ChangeThemeEvent(),
-              );
+          context.read<ThemeCubit>().changeTheme();
         },
         child: Icon(
-          context.watch<ThemeBloc>().state.theme == AppTheme.dark
+          context.watch<ThemeCubit>().state.theme == AppTheme.dark
               ? Icons.dark_mode
               : Icons.light_mode,
         ),

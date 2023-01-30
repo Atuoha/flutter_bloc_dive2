@@ -4,6 +4,7 @@ import '../screens/screen2.dart';
 import '../screens/using_bloc/bloc_screen1.dart';
 import '../screens/using_bloc/theme_switcher.dart';
 import '../screens/using_cubit/cubit_screen1.dart';
+import '../screens/using_cubit/theme_switcher.dart';
 
 class RouteManager {
   Route? onGenerateRoute(RouteSettings routeSettings) {
@@ -18,10 +19,14 @@ class RouteManager {
           builder: (context) => const CubitScreen(),
         );
 
-
-      case ThemeSwitcher.routeName:
+      case BlocThemeSwitcher.routeName:
         return MaterialPageRoute(
-          builder: (context) => const ThemeSwitcher(),
+          builder: (context) => const BlocThemeSwitcher(),
+        );
+
+      case CubitThemeSwitcher.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const CubitThemeSwitcher(),
         );
 
       case HomeScreen.routeName:
