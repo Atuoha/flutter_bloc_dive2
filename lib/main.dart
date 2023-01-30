@@ -6,6 +6,7 @@ import 'package:flutter_bloc_dive2/presentation/routes/route_manager.dart';
 
 import 'business_logic/bloc/theme/theme_bloc.dart';
 import 'business_logic/cubits/color/color_cubit.dart';
+import 'business_logic/cubits/counter_for_color/counter_color_cubit.dart';
 import 'business_logic/cubits/theme/theme_cubit.dart';
 import 'constants/enums/apptheme.dart';
 
@@ -18,8 +19,10 @@ class MyApp extends StatelessWidget {
 
   final RouteManager? routeManager;
 
+
   @override
   Widget build(BuildContext context) {
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -37,6 +40,10 @@ class MyApp extends StatelessWidget {
 
         BlocProvider(
           create: (context) => ColorCubit(),
+        ),
+
+        BlocProvider(
+          create: (context) => CounterColorCubit(colorCubit: BlocProvider.of<ColorCubit>(context)),
         ),
       ],
 

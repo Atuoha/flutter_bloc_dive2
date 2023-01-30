@@ -46,12 +46,12 @@ class _CubitRelationshipState extends State<CubitRelationship> {
         ],
       ),
       backgroundColor: context.watch<ColorCubit>().state.color,
-      body: const Center(
+      body:  Center(
         child: Text(
-          '0',
-          style: TextStyle(
+          'Counter: ${context.watch<CounterColorCubit>().state.counter}',
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 60,
           ),
         ),
       ),

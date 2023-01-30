@@ -31,7 +31,7 @@ class CounterColorCubit extends Cubit<CounterColorState> {
       } else if (colorState.color == Colors.grey) {
         emit(state.copyWith(counter: state.counter - 24));
       } else if (colorState.color == Colors.teal) {
-        emit(state.copyWith(counter: state.counter + 520));
+        emit(state.copyWith(counter: state.counter - 520));
       } else if (colorState.color == Colors.pink) {
         emit(state.copyWith(counter: state.counter - 110));
       } else if (colorState.color == Colors.blueGrey) {
