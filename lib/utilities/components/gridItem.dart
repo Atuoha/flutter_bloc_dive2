@@ -11,7 +11,7 @@ class GridItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.of(context).pushNamed(routeName),
       child: Container(
-        color: Colors.blueGrey,
+        color: Theme.of(context).primaryColor,
         child: Center(
           child: Text(
             title,

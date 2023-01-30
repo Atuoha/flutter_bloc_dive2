@@ -15,10 +15,32 @@ class Screen2 extends StatelessWidget {
           'Ops! The value is now below 0',
           style: TextStyle(
             fontWeight: FontWeight.w700,
-            fontSize: 30,
+            fontSize: 25,
           ),
         ),
       ),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

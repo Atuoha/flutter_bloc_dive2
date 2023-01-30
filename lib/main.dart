@@ -4,6 +4,9 @@ import 'package:flutter_bloc_dive2/business_logic/bloc/counter/counter_bloc.dart
 import 'package:flutter_bloc_dive2/business_logic/cubits/counter_cubit.dart';
 import 'package:flutter_bloc_dive2/presentation/routes/route_manager.dart';
 
+import 'business_logic/bloc/theme/theme_bloc.dart';
+import 'constants/enums/apptheme.dart';
+
 void main() => runApp(
       MyApp(routeManager: RouteManager()),
     );
@@ -22,11 +25,20 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CounterBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ThemeBloc(),
         )
       ],
-      child: MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.blueGrey),
-        onGenerateRoute: routeManager?.onGenerateRoute,
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            theme: state.theme == AppTheme.dark
+                ? ThemeData.dark()
+                : ThemeData.light(),
+            onGenerateRoute: routeManager?.onGenerateRoute,
+          );
+        },
       ),
     );
   }
