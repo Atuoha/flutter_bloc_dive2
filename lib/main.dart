@@ -5,6 +5,7 @@ import 'package:flutter_bloc_dive2/business_logic/cubits/counter/counter_cubit.d
 import 'package:flutter_bloc_dive2/presentation/routes/route_manager.dart';
 
 import 'business_logic/bloc/theme/theme_bloc.dart';
+import 'business_logic/cubits/color/color_cubit.dart';
 import 'business_logic/cubits/theme/theme_cubit.dart';
 import 'constants/enums/apptheme.dart';
 
@@ -32,6 +33,10 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ThemeCubit(),
+        ),
+
+        BlocProvider(
+          create: (context) => ColorCubit(),
         ),
       ],
 
