@@ -10,6 +10,11 @@ class CounterColorEvent extends Equatable {
   List<Object?> get props => [color];
 }
 
+class UpdateCounterEvent extends CounterColorEvent{
+  final int counter;
+  const UpdateCounterEvent({required this.counter});
+}
+
 class ChangeCounterEvent extends CounterColorEvent{}
 
 class IncrementCounterEvent extends CounterColorEvent {}
