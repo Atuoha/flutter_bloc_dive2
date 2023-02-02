@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/bloc_relationship.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/theme_switcher.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_cubit/cubit_relationship.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_cubit/theme_switcher.dart';
@@ -46,6 +47,10 @@ class HomeScreen extends StatelessWidget {
             GridItem(
               title: 'Cubit Relationship',
               routeName: CubitRelationship.routeName,
+            ),
+            GridItem(
+              title: 'Bloc Relationship',
+              routeName: BlocRelationship.routeName,
             ),
           ],
         ),

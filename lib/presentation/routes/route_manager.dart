@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../screens/homescreen.dart';
 import '../screens/screen2.dart';
+import '../screens/using_bloc/bloc_relationship.dart';
 import '../screens/using_bloc/bloc_screen1.dart';
 import '../screens/using_bloc/theme_switcher.dart';
 import '../screens/using_cubit/cubit_relationship.dart';
@@ -33,6 +34,11 @@ class RouteManager {
       case CubitRelationship.routeName:
         return MaterialPageRoute(
           builder: (context) => const CubitRelationship(),
+        );
+
+      case BlocRelationship.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const BlocRelationship(),
         );
 
       case HomeScreen.routeName:
