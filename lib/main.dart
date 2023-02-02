@@ -42,8 +42,14 @@ class MyApp extends StatelessWidget {
           create: (context) => ColorCubit(),
         ),
 
+        // cubit to cubit
+        // BlocProvider(
+        //   create: (context) => CounterColorCubit(colorCubit: BlocProvider.of<ColorCubit>(context)),
+        // ),
+
+       // cubit to listener
         BlocProvider(
-          create: (context) => CounterColorCubit(colorCubit: BlocProvider.of<ColorCubit>(context)),
+          create: (context) => CounterColorCubit(),
         ),
       ],
 
