@@ -1,4 +1,9 @@
 part of 'hyd_theme_bloc.dart';
 
 @immutable
-abstract class HydThemeEvent {}
+class HydThemeEvent extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
+
+class ToggleThemeEvent extends HydThemeEvent {}

@@ -16,7 +16,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     on<ChangeThemeEvent>((event, emit) {
       if (state.theme == AppTheme.light) {
         emit(state.copyWith(theme: AppTheme.dark));
-
       } else {
         emit(state.copyWith(theme: AppTheme.light));
       }

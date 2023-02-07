@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/hydrated_bloc/counter_app.dart';
+import '../screens/event_transformer/event_transformer.dart';
 import '../screens/homescreen.dart';
 import '../screens/screen2.dart';
+import '../screens/using_bloc/bloc_access.dart';
 import '../screens/using_bloc/bloc_relationship.dart';
 import '../screens/using_bloc/bloc_screen1.dart';
 import '../screens/using_bloc/theme_switcher.dart';
@@ -39,6 +42,21 @@ class RouteManager {
       case BlocRelationship.routeName:
         return MaterialPageRoute(
           builder: (context) => const BlocRelationship(),
+        );
+
+      case BlocAccess.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const BlocAccess(),
+        );
+
+      case EventTransformer.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const EventTransformer(),
+        );
+
+      case HydCounter.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const HydCounter(),
         );
 
       case HomeScreen.routeName:

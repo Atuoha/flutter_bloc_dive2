@@ -1,20 +1,37 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/bloc/counter/counter_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/cubits/counter/counter_cubit.dart';
 import 'package:flutter_bloc_dive2/presentation/routes/route_manager.dart';
-
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'business_logic/bloc/color/color_bloc.dart';
 import 'business_logic/bloc/counter_for_color/counter_color_bloc.dart';
+import 'business_logic/bloc/hydrated_bloc/counter/hyd_counter_bloc.dart';
+import 'business_logic/bloc/hydrated_bloc/theme/hyd_theme_bloc.dart';
 import 'business_logic/bloc/theme/theme_bloc.dart';
 import 'business_logic/cubits/color/color_cubit.dart';
 import 'business_logic/cubits/counter_for_color/counter_color_cubit.dart';
 import 'business_logic/cubits/theme/theme_cubit.dart';
 import 'constants/enums/apptheme.dart';
+import 'observer/app_bloc_observer.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() => runApp(
-      MyApp(routeManager: RouteManager()),
-    );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getApplicationDocumentsDirectory(),
+  );
+
+  Bloc.observer = AppBlocObserver();
+  runApp(
+    MyApp(routeManager: RouteManager()),
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key, this.routeManager}) : super(key: key);
@@ -42,6 +59,15 @@ class MyApp extends StatelessWidget {
           create: (context) => ColorCubit(),
         ),
 
+        // hydrated_bloc
+        BlocProvider(
+          create: (context) => HydCounterBloc(),
+        ),
+
+        BlocProvider(
+          create: (context) => HydThemeBloc(),
+        ),
+
         // cubit to cubit
         // BlocProvider(
         //   create: (context) => CounterColorCubit(colorCubit: BlocProvider.of<ColorCubit>(context)),
@@ -60,13 +86,25 @@ class MyApp extends StatelessWidget {
               CounterColorBloc(colorBloc: context.read<ColorBloc>()),
         ),
       ],
+      // normal
+      // child: BlocBuilder<ThemeBloc, ThemeState>(
+      //   //BLoC
+      //   //  child: BlocBuilder<ThemeCubit, CubitThemeState>( //Cubit
+      //   builder: (context, state) {
+      //     return MaterialApp(
+      //       theme: state.theme == AppTheme.dark
+      //           ? ThemeData.dark()
+      //           : ThemeData.light(),
+      //       onGenerateRoute: routeManager?.onGenerateRoute,
+      //     );
+      //   },
+      // ),
 
-      //  child: BlocBuilder<ThemeBloc, ThemeState>(   //BLoC
-      child: BlocBuilder<ThemeCubit, CubitThemeState>(
-        //Cubit
+      // hydrated_bloc version
+      child: BlocBuilder<HydThemeBloc, HydThemeState>(
         builder: (context, state) {
           return MaterialApp(
-            theme: state.theme == AppTheme.dark
+            theme: state.theme == AppThemed.dark
                 ? ThemeData.dark()
                 : ThemeData.light(),
             onGenerateRoute: routeManager?.onGenerateRoute,

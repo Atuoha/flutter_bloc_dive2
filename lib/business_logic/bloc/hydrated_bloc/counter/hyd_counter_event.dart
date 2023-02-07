@@ -1,4 +1,11 @@
 part of 'hyd_counter_bloc.dart';
 
 @immutable
-abstract class HydCounterEvent {}
+class HydCounterEvent extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
+
+class IncrementCounterEvent extends HydCounterEvent {}
+
+class DecrementCounterEvent extends HydCounterEvent {}

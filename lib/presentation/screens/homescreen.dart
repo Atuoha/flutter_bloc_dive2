@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/bloc_access.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/bloc_relationship.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/theme_switcher.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_cubit/cubit_relationship.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_cubit/theme_switcher.dart';
+import 'event_transformer/event_transformer.dart';
+import 'hydrated_bloc/counter_app.dart';
 import 'using_bloc/bloc_screen1.dart';
 import 'using_cubit/cubit_screen1.dart';
 
@@ -51,6 +54,21 @@ class HomeScreen extends StatelessWidget {
             GridItem(
               title: 'Bloc Relationship',
               routeName: BlocRelationship.routeName,
+            ),
+
+            GridItem(
+              title: 'Bloc Access',
+              routeName: BlocAccess.routeName,
+            ),
+
+            GridItem(
+              title: 'Event Transformer',
+              routeName: EventTransformer.routeName,
+            ),
+
+            GridItem(
+              title: 'Hydrated Bloc',
+              routeName: HydCounter.routeName,
             ),
           ],
         ),
