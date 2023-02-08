@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/todo/todo.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/bloc_access.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/bloc_relationship.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/theme_switcher.dart';
@@ -69,6 +70,10 @@ class HomeScreen extends StatelessWidget {
             GridItem(
               title: 'Hydrated Bloc',
               routeName: HydCounter.routeName,
+            ),
+            GridItem(
+              title: 'Todo App',
+              routeName: TodoApp.routeName,
             ),
           ],
         ),
