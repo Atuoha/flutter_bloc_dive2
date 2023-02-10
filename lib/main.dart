@@ -18,6 +18,7 @@ import 'business_logic/cubits/theme/theme_cubit.dart';
 import 'constants/enums/apptheme.dart';
 import 'observer/app_bloc_observer.dart';
 import 'package:path_provider/path_provider.dart';
+import 'business_logic/cubits/todo/cubits.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -82,9 +83,37 @@ class MyApp extends StatelessWidget {
           create: (context) => ColorBloc(),
         ),
         BlocProvider(
-          create: (context) =>
-              CounterColorBloc(colorBloc: context.read<ColorBloc>()),
+          create: (context) => CounterColorBloc(
+            colorBloc: context.read<ColorBloc>(),
+          ),
         ),
+
+        // TodoApp Cubits
+        BlocProvider(
+          create: (context) => TodoListCubit(),
+        ),
+        BlocProvider(
+          create: (context) => TodoFilterCubit(),
+        ),
+
+        BlocProvider(
+          create: (context) => TodoSearchCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ActiveTodoCountCubit(
+            todoListCubit: BlocProvider.of<TodoListCubit>(context),
+          ),
+        ),
+
+        BlocProvider(
+          create: (context) => FilteredTodosCubit(
+            todoFilterCubit: BlocProvider.of<TodoFilterCubit>(context),
+            todoSearchCubit: BlocProvider.of<TodoSearchCubit>(context),
+            todoListCubit: BlocProvider.of<TodoListCubit>(context),
+          ),
+        ),
+
+        // TodoApp Cubits
       ],
       // normal
       // child: BlocBuilder<ThemeBloc, ThemeState>(

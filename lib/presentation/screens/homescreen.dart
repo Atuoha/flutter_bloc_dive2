@@ -30,6 +30,10 @@ class HomeScreen extends StatelessWidget {
           crossAxisSpacing: 10,
           children: const [
             GridItem(
+              title: 'Todo App',
+              routeName: TodoApp.routeName,
+            ),
+            GridItem(
               title: 'Counter Using Cubit',
               routeName: CubitScreen.routeName,
             ),
@@ -71,10 +75,7 @@ class HomeScreen extends StatelessWidget {
               title: 'Hydrated Bloc',
               routeName: HydCounter.routeName,
             ),
-            GridItem(
-              title: 'Todo App',
-              routeName: TodoApp.routeName,
-            ),
+
           ],
         ),
       ),

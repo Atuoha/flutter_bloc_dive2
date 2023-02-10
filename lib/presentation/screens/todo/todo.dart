@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' as intl;
+import '../../../business_logic/cubits/todo/cubits.dart';
+import '../../../data/models/todo/todo.dart';
+import 'components/build_list_view.dart';
 
 class TodoApp extends StatefulWidget {
   const TodoApp({Key? key}) : super(key: key);
@@ -12,16 +17,55 @@ class TodoApp extends StatefulWidget {
 class _TodoAppState extends State<TodoApp> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
-  bool isChecked = false;
+  DateTime selectedDate = DateTime.now();
+  bool isDateSelected = false;
 
-  void removeFromList(int id) {}
+  void addTodo() {
+    Todo newTodo = Todo(
+      title: titleController.text.trim(),
+      content: contentController.text.trim(),
+      date: selectedDate,
+    );
+    context.read<TodoListCubit>().addTodo(newTodo);
+    setState(() {
+      isDateSelected = false;
+    });
+    Navigator.of(context).pop();
+  }
 
+  // remove from list
+  void removeFromList(Todo todo) {
+    context.read<TodoListCubit>().removeTodo(todo);
+  }
+
+  void updateTodoStatus(String id, bool status) {
+    context.read<TodoListCubit>().toggleCompleted(id, status);
+  }
+
+  // pick date
+  Future pickDate({required BuildContext context}) async {
+    var pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2030),
+    );
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        isDateSelected = true;
+        selectedDate = pickedDate;
+      });
+    }
+  }
+
+  // create modal
   Future createModal() {
     return showModalBottomSheet(
       context: context,
       builder: (context) => Padding(
         padding: const EdgeInsets.all(18.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Fill form to submit a new todo'),
             const SizedBox(height: 10),
@@ -52,9 +96,44 @@ class _TodoAppState extends State<TodoApp> {
               ),
             ),
             const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('Submit Todo'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                isDateSelected
+                    ? Text(
+                        'Selected Date:  ${intl.DateFormat.yMMMEd().format(selectedDate)}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                TextButton(
+                  onPressed: () => pickDate(
+                    context: context,
+                  ),
+                  child: const Text('Select Date'),
+                )
+              ],
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 15,
+                    ),
+                  ),
+                  icon: const Icon(Icons.save),
+                  onPressed: () => addTodo(),
+                  label: const Text('Submit Todo'),
+                ),
+              ),
             )
           ],
         ),
@@ -66,6 +145,7 @@ class _TodoAppState extends State<TodoApp> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
         systemNavigationBarColor: Colors.blue.withOpacity(0.5),
       ),
     );
@@ -83,10 +163,10 @@ class _TodoAppState extends State<TodoApp> {
               color: Colors.white,
             ),
           ),
-          actions: const [
+          actions: [
             Text(
-              '4 Items Left',
-              style: TextStyle(
+              '${context.watch<ActiveTodoCountCubit>().state.activeCount} Items Left',
+              style: const TextStyle(
                 color: Colors.white,
               ),
             )
@@ -137,74 +217,34 @@ class _TodoAppState extends State<TodoApp> {
               end: Alignment.bottomCenter,
             ),
           ),
-          child: TabBarView(
-            children: [
-              // First Tab
-              buildListView(context),
-
-              // Second Tab
-              buildListView(context),
-
-              // Third Tab
-              buildListView(context),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  // List View
-  ListView buildListView(BuildContext context) {
-    return ListView(
-      children: List.generate(
-        10,
-        (index) => Dismissible(
-          background: Container(
-            alignment: Alignment.centerRight,
-            color: Colors.red,
-            child: const Icon(Icons.delete, color: Colors.white),
-          ),
-          confirmDismiss: (DismissDirection direction) => showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Delete Todo'),
-              content: const Text('Do you want to delete this task?'),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Delete'),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: TabBarView(
+              children: [
+                // All Todos Tab
+                BuildListView(
+                  todoList:
+                      context.read<FilteredTodosCubit>().state.filteredTodos,
+                  updateTodoStatus: updateTodoStatus,
+                  removeFromList: removeFromList,
                 ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Cancel'),
+
+                // Active Todos Tab
+                BuildListView(
+                  todoList:
+                      context.read<FilteredTodosCubit>().state.filteredTodos,
+                  updateTodoStatus: updateTodoStatus,
+                  removeFromList: removeFromList,
+                ),
+
+                // Completed Todos Tab
+                BuildListView(
+                  todoList:
+                      context.read<FilteredTodosCubit>().state.filteredTodos,
+                  updateTodoStatus: updateTodoStatus,
+                  removeFromList: removeFromList,
                 ),
               ],
-            ),
-          ),
-          direction: DismissDirection.endToStart,
-
-          onDismissed: (DismissDirection direction) => removeFromList(index),
-          key: ValueKey(index),
-          child: ListTile(
-            key: ValueKey(index),
-            leading: Checkbox(
-              value: isChecked,
-              onChanged: (value) => setState(
-                () {
-                  isChecked = value!;
-                },
-              ),
-            ),
-            title: Text('Text $index'),
-            subtitle: const Text(
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,molestiae quas vel sint commodi repudiandae consequuntur'),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.note_alt,
-              ),
             ),
           ),
         ),
