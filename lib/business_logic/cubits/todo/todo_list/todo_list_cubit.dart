@@ -15,7 +15,6 @@ class TodoListCubit extends Cubit<TodoListState> {
       newTodo,
     ];
     emit(state.copyWith(todoList: newTodos));
-    print('TODOS: ${state.todoList}');
   }
 
   void removeTodo(Todo editTodo) {
@@ -43,13 +42,14 @@ class TodoListCubit extends Cubit<TodoListState> {
   }
 
   void toggleCompleted(String id, bool status) {
-    final List<Todo> newTodos = state.todoList
+    final newTodos = state.todoList
         .map((todo) => {
               if (todo.id == id) {todo.isCompleted = status}
             })
-        .cast<Todo>()
         .toList();
 
-    emit(state.copyWith(todoList: newTodos));
+    emit(state.copyWith(
+      todoList: newTodos.cast(),
+    ));
   }
 }
