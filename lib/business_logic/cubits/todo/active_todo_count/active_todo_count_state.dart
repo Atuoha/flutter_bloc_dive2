@@ -3,7 +3,6 @@ part of 'active_todo_count_cubit.dart';
 @immutable
 class ActiveTodoCountState extends Equatable {
   final int activeCount;
-
   const ActiveTodoCountState({required this.activeCount});
 
   factory ActiveTodoCountState.initial() =>

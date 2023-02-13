@@ -7,7 +7,7 @@ part 'todo_search_state.dart';
 class TodoSearchCubit extends Cubit<TodoSearchState> {
   TodoSearchCubit() : super(TodoSearchState.initial());
 
-  void searchTodo(String keyword) {
+  void setSearchKeyword(String keyword) {
     emit(state.copyWith(keyword: keyword));
   }
 }

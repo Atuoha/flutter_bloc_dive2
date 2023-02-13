@@ -5,6 +5,8 @@ import 'package:intl/intl.dart' as intl;
 import '../../../business_logic/cubits/todo/cubits.dart';
 import '../../../data/models/todo/todo.dart';
 import 'components/build_list_view.dart';
+import 'components/search_todo.dart';
+import 'components/tabbar.dart';
 
 class TodoApp extends StatefulWidget {
   const TodoApp({Key? key}) : super(key: key);
@@ -85,44 +87,9 @@ class _TodoAppState extends State<TodoApp> {
             children: [
               const Text('Fill form to submit a new todo'),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: titleController,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Title',
-                  label: const Text('Enter Title'),
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(width: 1.0),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Title can not be empty';
-                  }
-                  return null;
-                },
-              ),
+              textFormField(titleController, 1, 1, 'Title'),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: contentController,
-                minLines: 2,
-                maxLines: 3,
-                decoration: InputDecoration(
-                  hintText: 'Content',
-                  label: const Text('Enter Content'),
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(width: 1.0),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Content can not be empty';
-                  }
-                  return null;
-                },
-              ),
+              textFormField(contentController, 2, 3, 'Content'),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -194,7 +161,7 @@ class _TodoAppState extends State<TodoApp> {
         ),
         appBar: AppBar(
           title: const Text(
-            'Todo App',
+            'Todio',
             style: TextStyle(
               color: Colors.white,
             ),
@@ -210,49 +177,9 @@ class _TodoAppState extends State<TodoApp> {
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(90),
             child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search Todo',
-                      prefixIcon: const Icon(Icons.search),
-                      fillColor: Colors.white70,
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                  ),
-                ),
-                TabBar(
-                  onTap: (index) => {
-                    if (index == 0)
-                      {context.read<TodoFilterCubit>().changeFilter(Filter.all)}
-                    else if (index == 1)
-                      {
-                        context
-                            .read<TodoFilterCubit>()
-                            .changeFilter(Filter.active)
-                      }
-                    else
-                      {
-                        context
-                            .read<TodoFilterCubit>()
-                            .changeFilter(Filter.completed)
-                      }
-                  },
-                  tabs: const [
-                    Tab(text: 'All'),
-                    Tab(text: 'Active'),
-                    Tab(text: 'Completed'),
-                  ],
-                ),
+              children: const [
+                SearchTodo(),
+                TabBarWidget(),
               ],
             ),
           ),
@@ -303,4 +230,32 @@ class _TodoAppState extends State<TodoApp> {
       ),
     );
   }
+}
+
+// single TextField
+TextFormField textFormField(
+  TextEditingController controller,
+  minLines,
+  maxLines,
+  String label,
+) {
+  return TextFormField(
+    controller: controller,
+    minLines: minLines,
+    maxLines: maxLines,
+    decoration: InputDecoration(
+      hintText: label,
+      label: Text('Enter $label'),
+      border: OutlineInputBorder(
+        borderSide: const BorderSide(width: 1.0),
+        borderRadius: BorderRadius.circular(10),
+      ),
+    ),
+    validator: (value) {
+      if (value!.isEmpty) {
+        return '$label can not be empty';
+      }
+      return null;
+    },
+  );
 }

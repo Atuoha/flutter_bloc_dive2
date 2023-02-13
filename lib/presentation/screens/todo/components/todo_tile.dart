@@ -14,7 +14,7 @@ class TodoTile extends StatelessWidget {
   }) : super(key: key);
 
   final Function removeFromList;
-  final Todo todo;
+  final  Todo todo;
   final int index;
   final Function updateTodoStatus;
 
