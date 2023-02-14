@@ -40,6 +40,7 @@ class _TodoAppState extends State<TodoApp> {
         date: selectedDate,
       );
       context.read<TodoListCubit>().addTodo(newTodo);
+      afterTodoAddHandles();
     } else {
       //edit todo
       Todo editTodo = Todo(
@@ -50,12 +51,11 @@ class _TodoAppState extends State<TodoApp> {
         isCompleted: editingTodo!.isCompleted,
       );
       context.read<TodoListCubit>().editTodo(editTodo);
+      closeModalActions();
     }
-
-    afterTodoAddHandles();
   }
 
-  // handle
+  // handle add todo
   void afterTodoAddHandles() {
     setState(() {
       isDateSelected = false;
@@ -264,33 +264,18 @@ class _TodoAppState extends State<TodoApp> {
           ),
           child: Padding(
             padding: const EdgeInsets.only(top: 18.0),
-            child: TabBarView(
-              children: [
-                // All Todos Tab
-                BuildListView(
-                  todoList:
-                      context.read<FilteredTodosCubit>().state.filteredTodos,
-                  removeFromList: removeFromList,
-                  editTodo: editActions,
-                ),
-
-                // Active Todos Tab
-                BuildListView(
-                  todoList:
-                      context.read<FilteredTodosCubit>().state.filteredTodos,
-                  removeFromList: removeFromList,
-                  editTodo: editActions,
-                ),
+            child:
 
                 // Completed Todos Tab
                 BuildListView(
                   todoList:
-                      context.read<FilteredTodosCubit>().state.filteredTodos,
+                      context.watch<FilteredTodosCubit>().state.filteredTodos,
                   removeFromList: removeFromList,
                   editTodo: editActions,
                 ),
-              ],
-            ),
+
+
+
           ),
         ),
       ),

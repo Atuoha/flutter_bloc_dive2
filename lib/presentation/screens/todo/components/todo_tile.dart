@@ -49,6 +49,7 @@ class TodoTile extends StatelessWidget {
       onDismissed: (DismissDirection direction) => removeFromList(todo),
       key: ValueKey(index),
       child: ListTile(
+        contentPadding: EdgeInsets.zero,
         key: ValueKey(index),
         leading: Checkbox(
           value: todo.isCompleted,

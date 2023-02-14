@@ -24,7 +24,6 @@ class FilteredTodosCubit extends Cubit<FilteredTodosState> {
     required this.todoSearchCubit,
     required this.todoListCubit,
     required this.initialTodos,
-
   }) : super(FilteredTodosState(filteredTodos: initialTodos)) {
     todoFilterSubscription =
         todoFilterCubit.stream.listen((TodoFilterState todoFilterState) {
@@ -74,6 +73,7 @@ class FilteredTodosCubit extends Cubit<FilteredTodosState> {
     }
 
     emit(state.copyWith(filteredTodos: filterTodos));
+    print('FILTER-TODOS:$filterTodos');
   }
 
   @override

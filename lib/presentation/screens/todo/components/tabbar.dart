@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../business_logic/cubits/todo/todo_filter/todo_filter_cubit.dart';
 import '../../../../data/models/todo/todo.dart';
 
-
 class TabBarWidget extends StatelessWidget {
   const TabBarWidget({
     Key? key,
@@ -13,21 +12,14 @@ class TabBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TabBar(
-      onTap: (index) => {
-        if (index == 0)
-          {context.read<TodoFilterCubit>().changeFilter(Filter.all)}
-        else if (index == 1)
-          {
-            context
-                .read<TodoFilterCubit>()
-                .changeFilter(Filter.active)
-          }
-        else
-          {
-            context
-                .read<TodoFilterCubit>()
-                .changeFilter(Filter.completed)
-          }
+      onTap: (index) {
+        if (index == 0) {
+          context.read<TodoFilterCubit>().changeFilter(Filter.all);
+        } else if (index == 1) {
+          context.read<TodoFilterCubit>().changeFilter(Filter.active);
+        } else {
+          context.read<TodoFilterCubit>().changeFilter(Filter.completed);
+        }
       },
       tabs: const [
         Tab(text: 'All'),
