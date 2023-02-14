@@ -23,6 +23,8 @@ class _TodoAppState extends State<TodoApp> {
   DateTime selectedDate = DateTime.now();
   bool isDateSelected = false;
   bool dateNotSelectedError = false;
+  bool isEditState = false;
+  Todo? editingTodo;
 
   void addTodo() {
     var valid = formKey.currentState!.validate();
@@ -30,12 +32,26 @@ class _TodoAppState extends State<TodoApp> {
     if (!valid) {
       return;
     }
-    Todo newTodo = Todo(
-      title: titleController.text.trim(),
-      content: contentController.text.trim(),
-      date: selectedDate,
-    );
-    context.read<TodoListCubit>().addTodo(newTodo);
+    if (!isEditState) {
+      // create new todo
+      Todo newTodo = Todo(
+        title: titleController.text.trim(),
+        content: contentController.text.trim(),
+        date: selectedDate,
+      );
+      context.read<TodoListCubit>().addTodo(newTodo);
+    } else {
+      //edit todo
+      Todo editTodo = Todo(
+        id: editingTodo!.id,
+        title: titleController.text.trim(),
+        content: contentController.text.trim(),
+        date: selectedDate,
+        isCompleted: editingTodo!.isCompleted,
+      );
+      context.read<TodoListCubit>().editTodo(editTodo);
+    }
+
     afterTodoAddHandles();
   }
 
@@ -49,13 +65,41 @@ class _TodoAppState extends State<TodoApp> {
     Navigator.of(context).pop();
   }
 
-  // remove from list
-  void removeFromList(Todo todo) {
-    context.read<TodoListCubit>().removeTodo(todo);
+  // editingActions
+  void editActions(String id) {
+    Todo todo = context.read<TodoListCubit>().findById(id);
+    setState(() {
+      editingTodo = todo;
+      isEditState = true;
+      titleController.text = todo.title;
+      contentController.text = todo.content;
+      selectedDate = todo.date;
+      isDateSelected = true;
+    });
+    createModal();
   }
 
+  // close modal actions
+  void closeModalActions() {
+    setState(() {
+      isEditState = false;
+      titleController.clear();
+      contentController.clear();
+      selectedDate = DateTime.now();
+      isDateSelected = false;
+    });
+    Navigator.of(context).pop();
+  }
+
+  // remove from list
+  void removeFromList(String id) {
+    context.read<TodoListCubit>().removeTodo(id);
+    Navigator.of(context).pop();
+  }
+
+  // update todo status
   void updateTodoStatus(String id, bool status) {
-    context.read<TodoListCubit>().toggleCompleted(id, status);
+    context.read<TodoListCubit>().toggleCompleted(id);
   }
 
   // pick date
@@ -77,6 +121,7 @@ class _TodoAppState extends State<TodoApp> {
   // create modal
   Future createModal() {
     return showModalBottomSheet(
+      isDismissible: false,
       context: context,
       builder: (context) => Padding(
         padding: const EdgeInsets.all(18.0),
@@ -85,11 +130,32 @@ class _TodoAppState extends State<TodoApp> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Fill form to submit a new todo'),
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  onPressed: () => closeModalActions(),
+                  icon: const Icon(Icons.close),
+                ),
+              ),
+              Text(!isEditState
+                  ? 'Fill form to submit a new todo'
+                  : 'You are currently editing this todo'),
               const SizedBox(height: 10),
-              textFormField(titleController, 1, 1, 'Title'),
+              textFormField(
+                controller: titleController,
+                minLines: 1,
+                maxLines: 1,
+                label: 'Title',
+                autofocus: true,
+              ),
               const SizedBox(height: 10),
-              textFormField(contentController, 2, 3, 'Content'),
+              textFormField(
+                controller: contentController,
+                minLines: 2,
+                maxLines: 3,
+                label: 'Content',
+                autofocus: false,
+              ),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,7 +190,7 @@ class _TodoAppState extends State<TodoApp> {
                         vertical: 15,
                       ),
                     ),
-                    icon: const Icon(Icons.save),
+                    icon: const Icon(Icons.check_circle),
                     onPressed: () => addTodo(),
                     label: const Text('Submit Todo'),
                   ),
@@ -204,24 +270,24 @@ class _TodoAppState extends State<TodoApp> {
                 BuildListView(
                   todoList:
                       context.read<FilteredTodosCubit>().state.filteredTodos,
-                  updateTodoStatus: updateTodoStatus,
                   removeFromList: removeFromList,
+                  editTodo: editActions,
                 ),
 
                 // Active Todos Tab
                 BuildListView(
                   todoList:
                       context.read<FilteredTodosCubit>().state.filteredTodos,
-                  updateTodoStatus: updateTodoStatus,
                   removeFromList: removeFromList,
+                  editTodo: editActions,
                 ),
 
                 // Completed Todos Tab
                 BuildListView(
                   todoList:
                       context.read<FilteredTodosCubit>().state.filteredTodos,
-                  updateTodoStatus: updateTodoStatus,
                   removeFromList: removeFromList,
+                  editTodo: editActions,
                 ),
               ],
             ),
@@ -233,16 +299,18 @@ class _TodoAppState extends State<TodoApp> {
 }
 
 // single TextField
-TextFormField textFormField(
-  TextEditingController controller,
-  minLines,
-  maxLines,
-  String label,
-) {
+TextFormField textFormField({
+  required TextEditingController controller,
+  required minLines,
+  required maxLines,
+  required String label,
+  required autofocus,
+}) {
   return TextFormField(
     controller: controller,
     minLines: minLines,
     maxLines: maxLines,
+    autofocus: autofocus,
     decoration: InputDecoration(
       hintText: label,
       label: Text('Enter $label'),

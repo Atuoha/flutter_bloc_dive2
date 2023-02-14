@@ -17,39 +17,48 @@ class TodoListCubit extends Cubit<TodoListState> {
     emit(state.copyWith(todoList: newTodos));
   }
 
-  void removeTodo(Todo editTodo) {
+  void removeTodo(String id) {
     final newTodos =
-        state.todoList.where((todo) => todo.id != editTodo.id).toList();
+        state.todoList.where((todo) => todo.id != id).toList();
     emit(state.copyWith(todoList: newTodos));
   }
 
-  void editTodo(Todo editTodo) {
-    final newTodos = state.todoList
-        .map((todo) => {
-              if (todo.id == editTodo.id)
-                {
-                  todo = Todo(
-                    id: editTodo.id,
-                    title: editTodo.title,
-                    content: editTodo.content,
-                    date: editTodo.date,
-                    isCompleted: editTodo.isCompleted,
-                  )
-                }
-            })
-        .toList();
-    emit(state.copyWith(todoList: newTodos.cast()));
+  Todo findById(String id) {
+    return state.todoList.firstWhere((todo) => todo.id == id);
   }
 
-  void toggleCompleted(String id, bool status) {
-    final newTodos = state.todoList
-        .map((todo) => {
-              if (todo.id == id) {todo.isCompleted = status}
-            })
-        .toList();
+  void editTodo(Todo editTodo) {
+    final newTodos = state.todoList.map((todo) {
+      if (todo.id == editTodo.id) {
+        return Todo(
+          id: editTodo.id,
+          title: editTodo.title,
+          content: editTodo.content,
+          date: editTodo.date,
+          isCompleted: editTodo.isCompleted,
+        );
+      }
+      return todo;
+    }).toList();
+    emit(state.copyWith(todoList: newTodos));
+  }
+
+  void toggleCompleted(String id) {
+    final newTodos = state.todoList.map((Todo todo) {
+      if (todo.id == id) {
+        return Todo(
+          id: todo.id,
+          title: todo.title,
+          content: todo.content,
+          isCompleted: !todo.isCompleted,
+          date: todo.date,
+        );
+      }
+      return todo;
+    }).toList();
 
     emit(state.copyWith(
-      todoList: newTodos.cast(),
+      todoList: newTodos,
     ));
   }
 }

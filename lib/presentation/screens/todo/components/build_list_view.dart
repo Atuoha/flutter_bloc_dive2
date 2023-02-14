@@ -6,12 +6,13 @@ class BuildListView extends StatelessWidget {
   const BuildListView({
     Key? key,
     required this.todoList,
-    required this.updateTodoStatus,
     required this.removeFromList,
+    required this.editTodo,
   }) : super(key: key);
   final List<Todo> todoList;
-  final Function updateTodoStatus;
   final Function removeFromList;
+  final Function editTodo;
+
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,7 @@ class BuildListView extends StatelessWidget {
         return TodoTile(
           removeFromList: removeFromList,
           todo: todo,
-          updateTodoStatus: updateTodoStatus,
-          index: index,
+          index: index, editTodo: editTodo,
         );
       },
     );

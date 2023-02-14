@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_dive2/business_logic/cubits/todo/cubits.dart';
 import 'package:intl/intl.dart' as intl;
 
 import '../../../../data/models/todo/todo.dart';
-
 
 class TodoTile extends StatelessWidget {
   const TodoTile({
     Key? key,
     required this.removeFromList,
+    required this.editTodo,
     required this.todo,
-    required this.updateTodoStatus,
     required this.index,
   }) : super(key: key);
 
   final Function removeFromList;
-  final  Todo todo;
+  final Function editTodo;
+  final Todo todo;
   final int index;
-  final Function updateTodoStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class TodoTile extends StatelessWidget {
           content: const Text('Do you want to delete this task?'),
           actions: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () => removeFromList(todo.id),
               child: const Text('Delete'),
             ),
             const SizedBox(width: 10),
@@ -51,7 +52,8 @@ class TodoTile extends StatelessWidget {
         key: ValueKey(index),
         leading: Checkbox(
           value: todo.isCompleted,
-          onChanged: (value) => updateTodoStatus(todo.id, value),
+          onChanged: (value) =>
+              context.read<TodoListCubit>().toggleCompleted(todo.id),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,7 +70,7 @@ class TodoTile extends StatelessWidget {
         ),
         subtitle: Text(todo.content),
         trailing: IconButton(
-          onPressed: () {},
+          onPressed: () => editTodo(todo.id),
           icon: const Icon(
             Icons.note_alt,
           ),
