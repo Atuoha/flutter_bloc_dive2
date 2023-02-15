@@ -99,9 +99,19 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => TodoSearchCubit(),
         ),
+
+        // Using streamSubscription
+        // BlocProvider(
+        //   create: (context) => ActiveTodoCountCubit(
+        //     todoListCubit: BlocProvider.of<TodoListCubit>(context),
+        //     initialActiveTodoCount:
+        //         context.read<TodoListCubit>().state.todoList.length,
+        //   ),
+        // ),
+
+        // engaging BlocListener
         BlocProvider(
           create: (context) => ActiveTodoCountCubit(
-            todoListCubit: BlocProvider.of<TodoListCubit>(context),
             initialActiveTodoCount:
                 context.read<TodoListCubit>().state.todoList.length,
           ),

@@ -9,26 +9,41 @@ import '../../../../data/models/todo/todo.dart';
 
 part 'active_todo_count_state.dart';
 
+// USING StreamSubscription
+// class ActiveTodoCountCubit extends Cubit<ActiveTodoCountState> {
+//   final TodoListCubit todoListCubit;
+//   late StreamSubscription todoListSubscription;
+//   final int initialActiveTodoCount;
+//
+//   ActiveTodoCountCubit({required this.todoListCubit, required this.initialActiveTodoCount})
+//       : super(ActiveTodoCountState(activeCount: initialActiveTodoCount)) {
+//     todoListSubscription =
+//         todoListCubit.stream.listen((TodoListState todoListState) {
+//       final int activeTodos = todoListState.todoList
+//           .where((Todo todo) => !todo.isCompleted)
+//           .toList()
+//           .length;
+//       emit(state.copyWith(activeCount: activeTodos));
+//     });
+//   }
+//
+//   @override
+//   Future<void> close() {
+//     todoListSubscription.cancel();
+//     return super.close();
+//   }
+// }
+
+
+// Engaging BlocListener with StreamSubscription
 class ActiveTodoCountCubit extends Cubit<ActiveTodoCountState> {
-  final TodoListCubit todoListCubit;
-  late StreamSubscription todoListSubscription;
   final int initialActiveTodoCount;
 
-  ActiveTodoCountCubit({required this.todoListCubit, required this.initialActiveTodoCount})
-      : super(ActiveTodoCountState(activeCount: initialActiveTodoCount)) {
-    todoListSubscription =
-        todoListCubit.stream.listen((TodoListState todoListState) {
-      final int activeTodos = todoListState.todoList
-          .where((Todo todo) => !todo.isCompleted)
-          .toList()
-          .length;
-      emit(state.copyWith(activeCount: activeTodos));
-    });
-  }
+  ActiveTodoCountCubit(
+      {required this.initialActiveTodoCount})
+      : super(ActiveTodoCountState(activeCount: initialActiveTodoCount));
 
-  @override
-  Future<void> close() {
-    todoListSubscription.cancel();
-    return super.close();
+  void calcActiveTodo(int count){
+    emit(state.copyWith(activeCount: count));
   }
 }

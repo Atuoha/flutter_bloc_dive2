@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/cubits/todo/cubits.dart';
@@ -28,7 +30,9 @@ class SearchTodo extends StatelessWidget {
         ),
         onChanged: (String keyword) {
           if (keyword.isNotEmpty) {
-            context.read<TodoSearchCubit>().setSearchKeyword(keyword);
+            Timer(const Duration(milliseconds: 1000), () {
+              context.read<TodoSearchCubit>().setSearchKeyword(keyword);
+            });
           }
         },
       ),

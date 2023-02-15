@@ -253,10 +253,26 @@ class _TodoAppState extends State<TodoApp> {
             ),
           ),
           actions: [
-            Text(
-              '${context.watch<ActiveTodoCountCubit>().state.activeCount} Items Left',
-              style: const TextStyle(
-                color: Colors.white,
+            // using streamSubscription
+            // Text(
+            //   '${context.watch<ActiveTodoCountCubit>().state.activeCount} Items Left',
+            //   style: const TextStyle(
+            //     color: Colors.white,
+            //   ),
+            // )
+
+            // engaging BlocListener
+            BlocListener<TodoListCubit, TodoListState>(
+              listener: (context, state) {
+                var count =
+                    state.todoList.where((todo) => !todo.isCompleted).length;
+                context.read<ActiveTodoCountCubit>().calcActiveTodo(count);
+              },
+              child: Text(
+                '${context.watch<ActiveTodoCountCubit>().state.activeCount} Items Left',
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
               ),
             )
           ],
@@ -284,11 +300,40 @@ class _TodoAppState extends State<TodoApp> {
           ),
           child: Padding(
             padding: const EdgeInsets.only(top: 18.0),
-            child: BuildListView(
-              todoList: context.watch<FilteredTodosCubit>().state.filteredTodos,
-              removeFromList: removeFromList,
-              editTodo: editActions,
-              toggleTodoStatus: toggleTodoStatus,
+            child:
+
+                // using StreamSubscription
+                //  BuildListView(
+                //     todoList:
+                //     context.watch<FilteredTodosCubit>().state.filteredTodos,
+                //   removeFromList: removeFromList,
+                //   editTodo: editActions,
+                //   toggleTodoStatus: toggleTodoStatus,
+                // ),
+
+                // engaging BlocListener
+                MultiBlocListener(
+              listeners: [
+                BlocListener<TodoFilterCubit, TodoFilterState>(
+                    listener: (context, state) {
+                  context.read<FilteredTodosCubit>().setFilterTodos();
+                }),
+                BlocListener<TodoSearchCubit, TodoSearchState>(
+                    listener: (context, state) {
+                  context.read<FilteredTodosCubit>().setFilterTodos();
+                }),
+                BlocListener<TodoListCubit, TodoListState>(
+                    listener: (context, state) {
+                  context.read<FilteredTodosCubit>().setFilterTodos();
+                }),
+              ],
+              child: BuildListView(
+                todoList:
+                    context.watch<FilteredTodosCubit>().state.filteredTodos,
+                removeFromList: removeFromList,
+                editTodo: editActions,
+                toggleTodoStatus: toggleTodoStatus,
+              ),
             ),
           ),
         ),
