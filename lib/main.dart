@@ -117,12 +117,21 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
+
+        // using StreamSubscriptions
+        // BlocProvider(
+        //   create: (context) => FilteredTodosCubit(
+        //     initialTodos: context.read<TodoListCubit>().state.todoList,
+        //     todoFilterCubit: BlocProvider.of<TodoFilterCubit>(context),
+        //     todoSearchCubit: BlocProvider.of<TodoSearchCubit>(context),
+        //     todoListCubit: BlocProvider.of<TodoListCubit>(context),
+        //   ),
+        // ),
+
+        // engaging BlocListener
         BlocProvider(
           create: (context) => FilteredTodosCubit(
             initialTodos: context.read<TodoListCubit>().state.todoList,
-            todoFilterCubit: BlocProvider.of<TodoFilterCubit>(context),
-            todoSearchCubit: BlocProvider.of<TodoSearchCubit>(context),
-            todoListCubit: BlocProvider.of<TodoListCubit>(context),
           ),
         ),
 

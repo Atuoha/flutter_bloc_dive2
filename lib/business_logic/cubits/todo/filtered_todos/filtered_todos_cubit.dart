@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc_dive2/business_logic/cubits/todo/todo_filter/todo_filter_cubit.dart';
 import 'package:flutter_bloc_dive2/business_logic/cubits/todo/todo_search/todo_search_cubit.dart';
 import 'package:meta/meta.dart';
@@ -86,57 +87,47 @@ part 'filtered_todos_state.dart';
 //   }
 // }
 
-
-
-
-
 // engaging BlocListener
 class FilteredTodosCubit extends Cubit<FilteredTodosState> {
-  final TodoFilterCubit todoFilterCubit;
-  final TodoSearchCubit todoSearchCubit;
-  final TodoListCubit todoListCubit;
-
   final List<Todo> initialTodos;
 
   FilteredTodosCubit({
-    required this.todoFilterCubit,
-    required this.todoSearchCubit,
-    required this.todoListCubit,
     required this.initialTodos,
   }) : super(FilteredTodosState(filteredTodos: initialTodos));
 
-  void setFilterTodos() {
+  void setFilterTodos({
+    required Filter filter,
+    required List<Todo> todoList,
+    String searchKeyword = "",
+  }) {
     List<Todo> filterTodos;
 
-    switch (todoFilterCubit.state.filter) {
+    switch (filter) {
       case Filter.active:
-        filterTodos = todoListCubit.state.todoList
-            .where((todo) => !todo.isCompleted)
-            .toList();
+        filterTodos = todoList.where((todo) => !todo.isCompleted).toList();
         break;
 
       case Filter.completed:
-        filterTodos = todoListCubit.state.todoList
-            .where((todo) => todo.isCompleted)
-            .toList();
+        filterTodos = todoList.where((todo) => todo.isCompleted).toList();
         break;
       case Filter.all:
       default:
-        filterTodos = todoListCubit.state.todoList;
+        filterTodos = todoList;
     }
 
-    if (todoSearchCubit.state.keyword.isNotEmpty) {
-      String keyword = todoSearchCubit.state.keyword;
+    if (searchKeyword.isNotEmpty) {
       filterTodos = filterTodos
           .where(
             (todo) =>
-                todo.title.toLowerCase().contains(keyword) ||
-                todo.content.toLowerCase().contains(keyword),
+                todo.title.toLowerCase().contains(searchKeyword) ||
+                todo.content.toLowerCase().contains(searchKeyword),
           )
           .toList();
     }
 
     emit(state.copyWith(filteredTodos: filterTodos));
-    print('FILTER-TODOS:$filterTodos');
+    if (kDebugMode) {
+      print('FILTER-TODOS:$filterTodos');
+    }
   }
 }

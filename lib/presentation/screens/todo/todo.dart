@@ -314,17 +314,31 @@ class _TodoAppState extends State<TodoApp> {
                 // engaging BlocListener
                 MultiBlocListener(
               listeners: [
+                // For TodoFilter
                 BlocListener<TodoFilterCubit, TodoFilterState>(
                     listener: (context, state) {
-                  context.read<FilteredTodosCubit>().setFilterTodos();
+                  context.read<FilteredTodosCubit>().setFilterTodos(
+                      filter: context.read<TodoFilterCubit>().state.filter,
+                      todoList: context.read<TodoListCubit>().state.todoList);
                 }),
+
+                // For TodoSearch
                 BlocListener<TodoSearchCubit, TodoSearchState>(
                     listener: (context, state) {
-                  context.read<FilteredTodosCubit>().setFilterTodos();
+                  context.read<FilteredTodosCubit>().setFilterTodos(
+                        filter: context.read<TodoFilterCubit>().state.filter,
+                        todoList: context.read<TodoListCubit>().state.todoList,
+                        searchKeyword:
+                            context.read<TodoSearchCubit>().state.keyword,
+                      );
                 }),
+
+                // For TodoList
                 BlocListener<TodoListCubit, TodoListState>(
                     listener: (context, state) {
-                  context.read<FilteredTodosCubit>().setFilterTodos();
+                  context.read<FilteredTodosCubit>().setFilterTodos(
+                      filter: context.read<TodoFilterCubit>().state.filter,
+                      todoList: context.read<TodoListCubit>().state.todoList);
                 }),
               ],
               child: BuildListView(
