@@ -7,10 +7,12 @@ class BuildListView extends StatelessWidget {
     Key? key,
     required this.todoList,
     required this.removeFromList,
+    required this.toggleTodoStatus,
     required this.editTodo,
   }) : super(key: key);
   final List<Todo> todoList;
   final Function removeFromList;
+  final Function toggleTodoStatus;
   final Function editTodo;
 
 
@@ -22,6 +24,7 @@ class BuildListView extends StatelessWidget {
         Todo todo = todoList[index];
         return TodoTile(
           removeFromList: removeFromList,
+          toggleTodoStatus: toggleTodoStatus,
           todo: todo,
           index: index, editTodo: editTodo,
         );

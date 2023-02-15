@@ -9,11 +9,12 @@ class TodoTile extends StatelessWidget {
   const TodoTile({
     Key? key,
     required this.removeFromList,
+    required this.toggleTodoStatus,
     required this.editTodo,
     required this.todo,
     required this.index,
   }) : super(key: key);
-
+  final Function toggleTodoStatus;
   final Function removeFromList;
   final Function editTodo;
   final Todo todo;
@@ -53,8 +54,7 @@ class TodoTile extends StatelessWidget {
         key: ValueKey(index),
         leading: Checkbox(
           value: todo.isCompleted,
-          onChanged: (value) =>
-              context.read<TodoListCubit>().toggleCompleted(todo.id),
+          onChanged: (value) => toggleTodoStatus(todo.id),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

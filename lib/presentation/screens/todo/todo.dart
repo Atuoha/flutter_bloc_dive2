@@ -63,6 +63,7 @@ class _TodoAppState extends State<TodoApp> {
       contentController.clear();
     });
     Navigator.of(context).pop();
+    showSnackBarMessage(message: 'Todo added successfully!');
   }
 
   // editingActions
@@ -77,6 +78,7 @@ class _TodoAppState extends State<TodoApp> {
       isDateSelected = true;
     });
     createModal();
+    showSnackBarMessage(message: 'Editing Completed!');
   }
 
   // close modal actions
@@ -95,11 +97,14 @@ class _TodoAppState extends State<TodoApp> {
   void removeFromList(String id) {
     context.read<TodoListCubit>().removeTodo(id);
     Navigator.of(context).pop();
+    showSnackBarMessage(
+        message: 'Todo deleted successfully!', background: Colors.red);
   }
 
-  // update todo status
-  void updateTodoStatus(String id, bool status) {
+  // toggle todo status
+  void toggleTodoStatus(String id) {
     context.read<TodoListCubit>().toggleCompleted(id);
+    showSnackBarMessage(message: 'Todo status updated successfully!');
   }
 
   // pick date
@@ -116,6 +121,21 @@ class _TodoAppState extends State<TodoApp> {
         selectedDate = pickedDate;
       });
     }
+  }
+
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBarMessage(
+      {required String message, Color background = Colors.green}) {
+    return ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: background,
+        content: Text(
+          message,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
   }
 
   // create modal
@@ -192,7 +212,7 @@ class _TodoAppState extends State<TodoApp> {
                     ),
                     icon: const Icon(Icons.check_circle),
                     onPressed: () => addTodo(),
-                    label: const Text('Submit Todo'),
+                    label: Text(isEditState ? 'Submit Edit' : 'Submit Todo'),
                   ),
                 ),
               )
@@ -264,18 +284,12 @@ class _TodoAppState extends State<TodoApp> {
           ),
           child: Padding(
             padding: const EdgeInsets.only(top: 18.0),
-            child:
-
-                // Completed Todos Tab
-                BuildListView(
-                  todoList:
-                      context.watch<FilteredTodosCubit>().state.filteredTodos,
-                  removeFromList: removeFromList,
-                  editTodo: editActions,
-                ),
-
-
-
+            child: BuildListView(
+              todoList: context.watch<FilteredTodosCubit>().state.filteredTodos,
+              removeFromList: removeFromList,
+              editTodo: editActions,
+              toggleTodoStatus: toggleTodoStatus,
+            ),
           ),
         ),
       ),
