@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_dive2/business_logic/cubits/todo/cubits.dart';
+import 'package:flutter_bloc_dive2/business_logic/todo/cubits/cubits.dart';
 import 'package:intl/intl.dart' as intl;
 
 import '../../../../data/models/todo/todo.dart';

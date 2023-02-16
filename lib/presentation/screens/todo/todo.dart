@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
-import '../../../business_logic/cubits/todo/cubits.dart';
+import '../../../business_logic/todo/cubits/cubits.dart';
 import '../../../data/models/todo/todo.dart';
 import 'components/build_list_view.dart';
 import 'components/search_todo.dart';
@@ -341,13 +341,28 @@ class _TodoAppState extends State<TodoApp> {
                       todoList: context.read<TodoListCubit>().state.todoList);
                 }),
               ],
-              child: BuildListView(
-                todoList:
-                    context.watch<FilteredTodosCubit>().state.filteredTodos,
-                removeFromList: removeFromList,
-                editTodo: editActions,
-                toggleTodoStatus: toggleTodoStatus,
-              ),
+              child: context
+                      .watch<FilteredTodosCubit>()
+                      .state
+                      .filteredTodos
+                      .isNotEmpty
+                  ? BuildListView(
+                      todoList: context
+                          .watch<FilteredTodosCubit>()
+                          .state
+                          .filteredTodos,
+                      removeFromList: removeFromList,
+                      editTodo: editActions,
+                      toggleTodoStatus: toggleTodoStatus,
+                    )
+                  :  Center(
+                      child: Text(
+                        'Opps! ${context.watch<TodoFilterCubit>().state.filter.name} todo list is empty',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
             ),
           ),
         ),

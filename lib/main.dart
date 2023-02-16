@@ -18,7 +18,7 @@ import 'business_logic/cubits/theme/theme_cubit.dart';
 import 'constants/enums/apptheme.dart';
 import 'observer/app_bloc_observer.dart';
 import 'package:path_provider/path_provider.dart';
-import 'business_logic/cubits/todo/cubits.dart';
+import 'business_logic/todo/cubits/cubits.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

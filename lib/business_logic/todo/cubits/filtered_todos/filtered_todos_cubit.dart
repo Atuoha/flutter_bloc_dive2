@@ -2,11 +2,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_bloc_dive2/business_logic/cubits/todo/todo_filter/todo_filter_cubit.dart';
-import 'package:flutter_bloc_dive2/business_logic/cubits/todo/todo_search/todo_search_cubit.dart';
 import 'package:meta/meta.dart';
 
-import '../../../../data/models/todo/todo.dart';
+import '../../../../../data/models/todo/todo.dart';
 import '../todo_list/todo_list_cubit.dart';
 
 part 'filtered_todos_state.dart';

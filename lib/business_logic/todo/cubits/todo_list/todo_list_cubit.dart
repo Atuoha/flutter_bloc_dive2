@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-
-import '../../../../data/models/todo/todo.dart';
+import '../../../../../data/models/todo/todo.dart';
 
 part 'todo_list_state.dart';
 
