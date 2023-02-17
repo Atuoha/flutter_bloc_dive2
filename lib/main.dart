@@ -20,6 +20,8 @@ import 'observer/app_bloc_observer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'business_logic/todo/cubits/cubits.dart';
 
+import 'business_logic/todo/bloc/bloc.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HydratedBloc.storage = await HydratedStorage.build(
@@ -89,16 +91,16 @@ class MyApp extends StatelessWidget {
         ),
 
         // TodoApp Cubits
-        BlocProvider(
-          create: (context) => TodoListCubit(),
-        ),
-        BlocProvider(
-          create: (context) => TodoFilterCubit(),
-        ),
-
-        BlocProvider(
-          create: (context) => TodoSearchCubit(),
-        ),
+        // BlocProvider(
+        //   create: (context) => TodoListCubit(),
+        // ),
+        // BlocProvider(
+        //   create: (context) => TodoFilterCubit(),
+        // ),
+        //
+        // BlocProvider(
+        //   create: (context) => TodoSearchCubit(),
+        // ),
 
         // Using streamSubscription
         // BlocProvider(
@@ -110,13 +112,12 @@ class MyApp extends StatelessWidget {
         // ),
 
         // engaging BlocListener
-        BlocProvider(
-          create: (context) => ActiveTodoCountCubit(
-            initialActiveTodoCount:
-                context.read<TodoListCubit>().state.todoList.length,
-          ),
-        ),
-
+        // BlocProvider(
+        //   create: (context) => ActiveTodoCountCubit(
+        //     initialActiveTodoCount:
+        //         context.read<TodoListCubit>().state.todoList.length,
+        //   ),
+        // ),
 
         // using StreamSubscriptions
         // BlocProvider(
@@ -129,13 +130,35 @@ class MyApp extends StatelessWidget {
         // ),
 
         // engaging BlocListener
+        // BlocProvider(
+        //   create: (context) => FilteredTodosCubit(
+        //     initialTodos: context.read<TodoListCubit>().state.todoList,
+        //   ),
+        // ),
+        // TodoApp Cubits
+
+        // TodoApp Bloc
+
+        BlocProvider(create: (context) => TodoListBloc()),
+        BlocProvider(create: (context) => TodoSearchBloc()),
+        BlocProvider(create: (context) => TodoFilterBloc()),
         BlocProvider(
-          create: (context) => FilteredTodosCubit(
-            initialTodos: context.read<TodoListCubit>().state.todoList,
+          create: (context) => ActiveTodoBloc(
+            todoListBloc: BlocProvider.of<TodoListBloc>(context),
+            initialTodoCount:
+            context.read<TodoListBloc>().state.todoList.length,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => FilteredTodoBloc(
+            todoListBloc: BlocProvider.of<TodoListBloc>(context),
+            todoSearchBloc: BlocProvider.of<TodoSearchBloc>(context),
+            todoFilterBloc: BlocProvider.of<TodoFilterBloc>(context),
+            initialTodoList: BlocProvider.of<TodoListBloc>(context).state.todoList,
           ),
         ),
 
-        // TodoApp Cubits
+
       ],
       // normal
       // child: BlocBuilder<ThemeBloc, ThemeState>(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../business_logic/todo/cubits/cubits.dart';
-import '../../../../data/models/todo/todo.dart';
+import '../../../../../business_logic/todo/cubits/cubits.dart';
+import '../../../../../data/models/todo/todo.dart';
 
 class TabBarWidget extends StatelessWidget {
   const TabBarWidget({

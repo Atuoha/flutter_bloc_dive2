@@ -3,7 +3,8 @@ import 'package:flutter_bloc_dive2/presentation/screens/hydrated_bloc/counter_ap
 import '../screens/event_transformer/event_transformer.dart';
 import '../screens/homescreen.dart';
 import '../screens/screen2.dart';
-import '../screens/todo/todo.dart';
+import '../screens/todo/using_bloc/todo.dart';
+import '../screens/todo/using_cubit/todo.dart';
 import '../screens/using_bloc/bloc_access.dart';
 import '../screens/using_bloc/bloc_relationship.dart';
 import '../screens/using_bloc/bloc_screen1.dart';
@@ -70,9 +71,14 @@ class RouteManager {
           builder: (context) => const Screen2(),
         );
 
-      case TodoApp.routeName:
+      case TodoAppCubit.routeName:
         return MaterialPageRoute(
-          builder: (context) => const TodoApp(),
+          builder: (context) => const TodoAppCubit(),
+        );
+
+      case TodoAppBloc.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const TodoAppBloc(),
         );
     }
     return null;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_dive2/presentation/screens/todo/todo.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/todo/using_bloc/todo.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/todo/using_cubit/todo.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/bloc_access.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/bloc_relationship.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/theme_switcher.dart';
@@ -30,8 +31,12 @@ class HomeScreen extends StatelessWidget {
           crossAxisSpacing: 10,
           children: const [
             GridItem(
-              title: 'Todo App',
-              routeName: TodoApp.routeName,
+              title: 'Todo App Cubit',
+              routeName: TodoAppCubit.routeName,
+            ),
+            GridItem(
+              title: 'Todo App Bloc',
+              routeName: TodoAppBloc.routeName,
             ),
             GridItem(
               title: 'Counter Using Cubit',

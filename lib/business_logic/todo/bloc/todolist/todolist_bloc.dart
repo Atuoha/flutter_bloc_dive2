@@ -49,8 +49,8 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
         if (todo.id == event.id) {
           return Todo(
               id: todo.id,
-              title: '',
-              content: '',
+              title: todo.title,
+              content: todo.content,
               date: todo.date,
               isCompleted: !todo.isCompleted);
         }

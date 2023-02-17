@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'todo_tile.dart';
-import '../../../../data/models/todo/todo.dart';
+import '../../../../../data/models/todo/todo.dart';
 
 class BuildListView extends StatelessWidget {
   const BuildListView({
