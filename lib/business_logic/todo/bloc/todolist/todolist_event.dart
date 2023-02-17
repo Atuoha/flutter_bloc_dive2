@@ -20,9 +20,9 @@ class AddTodoEvent extends TodoListEvent {
   }
 }
 
-
-class EditTodoEvent extends TodoListEvent{
+class EditTodoEvent extends TodoListEvent {
   final Todo editTodo;
+
   EditTodoEvent({required this.editTodo});
 
   @override
@@ -34,8 +34,9 @@ class EditTodoEvent extends TodoListEvent{
   }
 }
 
-class DeleteTodoEvent extends TodoListEvent{
+class DeleteTodoEvent extends TodoListEvent {
   final String id;
+
   DeleteTodoEvent({required this.id});
 
   @override
@@ -47,8 +48,22 @@ class DeleteTodoEvent extends TodoListEvent{
   }
 }
 
-class ToggleTodoStatus extends TodoListEvent{
+class FindById extends TodoListEvent {
   final String id;
+  FindById({required this.id});
+
+  @override
+  List<Object?> get props => [id];
+
+  @override
+  String toString() {
+    return 'FindById{id: $id}';
+  }
+}
+
+class ToggleTodoStatus extends TodoListEvent {
+  final String id;
+
   ToggleTodoStatus({required this.id});
 
   @override
@@ -59,4 +74,3 @@ class ToggleTodoStatus extends TodoListEvent{
     return 'ToggleTodoStatus{id: $id}';
   }
 }
-

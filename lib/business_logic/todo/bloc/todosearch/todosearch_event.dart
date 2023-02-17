@@ -6,9 +6,9 @@ class TodoSearchEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class SetSearchKeyword extends TodoSearchEvent {
+class SetSearchKeywordEvent extends TodoSearchEvent {
   final String keyword;
-  SetSearchKeyword({required this.keyword});
+  SetSearchKeywordEvent({required this.keyword});
 
   @override
   List<Object?> get props => [keyword];

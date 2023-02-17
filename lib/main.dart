@@ -138,7 +138,6 @@ class MyApp extends StatelessWidget {
         // TodoApp Cubits
 
         // TodoApp Bloc
-
         BlocProvider(create: (context) => TodoListBloc()),
         BlocProvider(create: (context) => TodoSearchBloc()),
         BlocProvider(create: (context) => TodoFilterBloc()),
@@ -149,11 +148,20 @@ class MyApp extends StatelessWidget {
             context.read<TodoListBloc>().state.todoList.length,
           ),
         ),
+
+        // using streamSubscriptions
+        // BlocProvider(
+        //   create: (context) => FilteredTodoBloc(
+        //     todoListBloc: BlocProvider.of<TodoListBloc>(context),
+        //     todoSearchBloc: BlocProvider.of<TodoSearchBloc>(context),
+        //     todoFilterBloc: BlocProvider.of<TodoFilterBloc>(context),
+        //     initialTodoList: BlocProvider.of<TodoListBloc>(context).state.todoList,
+        //   ),
+        // ),
+
+        // engaging BlocListener
         BlocProvider(
           create: (context) => FilteredTodoBloc(
-            todoListBloc: BlocProvider.of<TodoListBloc>(context),
-            todoSearchBloc: BlocProvider.of<TodoSearchBloc>(context),
-            todoFilterBloc: BlocProvider.of<TodoFilterBloc>(context),
             initialTodoList: BlocProvider.of<TodoListBloc>(context).state.todoList,
           ),
         ),

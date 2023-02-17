@@ -32,7 +32,7 @@ class SearchTodo extends StatelessWidget {
             Timer(const Duration(milliseconds: 1000), () {
               context
                   .read<TodoSearchBloc>()
-                  .add(SetSearchKeyword(keyword: keyword));
+                  .add(SetSearchKeywordEvent(keyword: keyword));
             });
           }
         },

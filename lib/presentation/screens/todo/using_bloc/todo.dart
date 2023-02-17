@@ -5,7 +5,7 @@ import 'package:flutter_bloc_dive2/business_logic/todo/bloc/activetodo/activetod
 import 'package:flutter_bloc_dive2/business_logic/todo/bloc/bloc.dart';
 import 'package:intl/intl.dart' as intl;
 import '../../../../business_logic/todo/bloc/todolist/todolist_bloc.dart';
-import '../../../../business_logic/todo/cubits/cubits.dart';
+import '../../../../business_logic/todo/bloc/bloc.dart';
 import '../../../../data/models/todo/todo.dart';
 import 'components/build_list_view.dart';
 import 'components/search_todo.dart';
@@ -71,7 +71,11 @@ class _TodoAppBlocState extends State<TodoAppBloc> {
 
   // editingActions
   void editActions(String id) {
-    Todo todo = context.read<TodoListCubit>().findById(id);
+    Todo todo = context
+        .read<TodoListBloc>()
+        .state
+        .todoList
+        .firstWhere((todo) => todo.id == id);
     setState(() {
       editingTodo = todo;
       isEditState = true;
@@ -257,10 +261,13 @@ class _TodoAppBlocState extends State<TodoAppBloc> {
           ),
           actions: [
             // using streamSubscription
-            Text(
-              '${context.watch<ActiveTodoBloc>().state.activeTodoCount} Items Left',
-              style: const TextStyle(
-                color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Text(
+                '${context.watch<ActiveTodoBloc>().state.activeTodoCount} Items Left',
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
               ),
             )
 
@@ -306,77 +313,87 @@ class _TodoAppBlocState extends State<TodoAppBloc> {
             child:
 
                 // using StreamSubscription
-                context.watch<FilteredTodoBloc>().state.filteredTodos.isNotEmpty
-                    ? BuildListView(
-                        todoList: context
-                            .watch<FilteredTodoBloc>()
-                            .state
-                            .filteredTodos,
-                        removeFromList: removeFromList,
-                        editTodo: editActions,
-                        toggleTodoStatus: toggleTodoStatus,
-                      )
-                    : Center(
-                        child: Text(
-                          'Opps! ${context.watch<TodoFilterBloc>().state.filter.name} todo list is empty',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                          ),
+                // context.watch<FilteredTodoBloc>().state.filteredTodos.isNotEmpty
+                //     ? BuildListView(
+                //         todoList: context
+                //             .watch<FilteredTodoBloc>()
+                //             .state
+                //             .filteredTodos,
+                //         removeFromList: removeFromList,
+                //         editTodo: editActions,
+                //         toggleTodoStatus: toggleTodoStatus,
+                //       )
+                //     : Center(
+                //         child: Text(
+                //           'Opps! ${context.watch<TodoFilterBloc>().state.filter.name} todo list is empty',
+                //           style: const TextStyle(
+                //             fontWeight: FontWeight.w700,
+                //           ),
+                //         ),
+                //       ),
+                // engaging BlocListener
+                MultiBlocListener(
+              listeners: [
+                // For TodoFilter
+                BlocListener<TodoFilterBloc, TodoFilterState>(
+                    listener: (context, state) {
+                  context.read<FilteredTodoBloc>().add(
+                        SetFilteredTodoEvent(
+                          searchKeyword:
+                              context.read<TodoSearchBloc>().state.keyword,
+                          filter: context.read<TodoFilterBloc>().state.filter,
+                          todoList: context.read<TodoListBloc>().state.todoList,
+                        ),
+                      );
+                }),
+
+                // For TodoSearch
+                BlocListener<TodoSearchBloc, TodoSearchState>(
+                    listener: (context, state) {
+                  context.read<FilteredTodoBloc>().add(
+                        SetFilteredTodoEvent(
+                          searchKeyword:
+                              context.read<TodoSearchBloc>().state.keyword,
+                          filter: context.read<TodoFilterBloc>().state.filter,
+                          todoList: context.read<TodoListBloc>().state.todoList,
+                        ),
+                      );
+                }),
+
+                // For TodoList
+                BlocListener<TodoListBloc, TodoListState>(
+                    listener: (context, state) {
+                  context.read<FilteredTodoBloc>().add(
+                        SetFilteredTodoEvent(
+                          searchKeyword:
+                              context.read<TodoSearchBloc>().state.keyword,
+                          filter: context.read<TodoFilterBloc>().state.filter,
+                          todoList: context.read<TodoListBloc>().state.todoList,
+                        ),
+                      );
+                }),
+              ],
+              child: context
+                      .watch<FilteredTodoBloc>()
+                      .state
+                      .filteredTodos
+                      .isNotEmpty
+                  ? BuildListView(
+                      todoList:
+                          context.watch<FilteredTodoBloc>().state.filteredTodos,
+                      removeFromList: removeFromList,
+                      editTodo: editActions,
+                      toggleTodoStatus: toggleTodoStatus,
+                    )
+                  : Center(
+                      child: Text(
+                        'Opps! ${context.watch<TodoFilterBloc>().state.filter.name} todo list is empty',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-            // engaging BlocListener
-            //     MultiBlocListener(
-            //   listeners: [
-            //     // For TodoFilter
-            //     BlocListener<TodoFilterCubit, TodoFilterState>(
-            //         listener: (context, state) {
-            //       context.read<FilteredTodosCubit>().setFilterTodos(
-            //           filter: context.read<TodoFilterCubit>().state.filter,
-            //           todoList: context.read<TodoListCubit>().state.todoList);
-            //     }),
-            //
-            //     // For TodoSearch
-            //     BlocListener<TodoSearchCubit, TodoSearchState>(
-            //         listener: (context, state) {
-            //       context.read<FilteredTodosCubit>().setFilterTodos(
-            //             filter: context.read<TodoFilterCubit>().state.filter,
-            //             todoList: context.read<TodoListCubit>().state.todoList,
-            //             searchKeyword:
-            //                 context.read<TodoSearchCubit>().state.keyword,
-            //           );
-            //     }),
-            //
-            //     // For TodoList
-            //     BlocListener<TodoListCubit, TodoListState>(
-            //         listener: (context, state) {
-            //       context.read<FilteredTodosCubit>().setFilterTodos(
-            //           filter: context.read<TodoFilterCubit>().state.filter,
-            //           todoList: context.read<TodoListCubit>().state.todoList);
-            //     }),
-            //   ],
-            //   child: context
-            //           .watch<FilteredTodosCubit>()
-            //           .state
-            //           .filteredTodos
-            //           .isNotEmpty
-            //       ? BuildListView(
-            //           todoList: context
-            //               .watch<FilteredTodosCubit>()
-            //               .state
-            //               .filteredTodos,
-            //           removeFromList: removeFromList,
-            //           editTodo: editActions,
-            //           toggleTodoStatus: toggleTodoStatus,
-            //         )
-            //       :  Center(
-            //           child: Text(
-            //             'Opps! ${context.watch<TodoFilterCubit>().state.filter.name} todo list is empty',
-            //             style: const TextStyle(
-            //               fontWeight: FontWeight.w700,
-            //             ),
-            //           ),
-            //         ),
-            // ),
+                    ),
+            ),
           ),
         ),
       ),

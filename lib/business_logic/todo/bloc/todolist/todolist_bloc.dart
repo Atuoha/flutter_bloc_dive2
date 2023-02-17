@@ -43,6 +43,15 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
       emit(state.copyWith(todoList: todoList));
     });
 
+    // FindById
+    Todo findById(String id) {
+      return state.todoList.firstWhere((todo) => todo.id == id);
+    }
+
+    on<FindById>((event, emit) {
+     Todo todo =  state.todoList.firstWhere((todo) => todo.id == event.id);
+    });
+
     // ToggleTodoStatus
     on<ToggleTodoStatus>((event, emit) {
       List<Todo> todoList = state.todoList.map((todo) {
