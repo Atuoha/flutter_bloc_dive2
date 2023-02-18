@@ -12,14 +12,19 @@ class WeatherAppCubit extends StatefulWidget {
 class _WeatherAppCubitState extends State<WeatherAppCubit> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('WeatherApp Bloc'),
         bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(50),
+          preferredSize:  Size.fromHeight(50),
           child: SearchWeather(),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.settings),
+          ),
+        ],
       ),
     );
   }
