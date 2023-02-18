@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/todo/using_bloc/todo.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/todo/using_cubit/todo.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/bloc_access.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/bloc_relation
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/theme_switcher.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_cubit/cubit_relationship.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_cubit/theme_switcher.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/weather_app.dart';
 import 'event_transformer/event_transformer.dart';
 import 'hydrated_bloc/counter_app.dart';
 import 'using_bloc/bloc_screen1.dart';
@@ -19,6 +21,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.blue.withOpacity(0.5),
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dive into Bloc/Dive'),
@@ -37,6 +45,10 @@ class HomeScreen extends StatelessWidget {
             GridItem(
               title: 'Todo App Bloc',
               routeName: TodoAppBloc.routeName,
+            ),
+            GridItem(
+              title: 'WeatherApp Cubit',
+              routeName: WeatherAppCubit.routeName,
             ),
             GridItem(
               title: 'Counter Using Cubit',

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/todo/bloc/activetodo/activetodo_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/todo/bloc/bloc.dart';
@@ -239,12 +238,6 @@ class _TodoAppBlocState extends State<TodoAppBloc> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.blue.withOpacity(0.5),
-      ),
-    );
     return DefaultTabController(
       length: 3,
       child: Scaffold(

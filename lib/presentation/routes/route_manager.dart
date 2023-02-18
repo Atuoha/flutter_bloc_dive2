@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/hydrated_bloc/counter_app.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/weather_app.dart';
 import '../screens/event_transformer/event_transformer.dart';
 import '../screens/homescreen.dart';
 import '../screens/screen2.dart';
@@ -79,6 +80,11 @@ class RouteManager {
       case TodoAppBloc.routeName:
         return MaterialPageRoute(
           builder: (context) => const TodoAppBloc(),
+        );
+
+      case WeatherAppCubit.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const WeatherAppCubit(),
         );
     }
     return null;

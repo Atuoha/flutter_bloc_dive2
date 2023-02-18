@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 import '../../../../business_logic/todo/cubits/cubits.dart';
@@ -232,12 +231,6 @@ class _TodoAppCubitState extends State<TodoAppCubit> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.blue.withOpacity(0.5),
-      ),
-    );
     return DefaultTabController(
       length: 3,
       child: Scaffold(
