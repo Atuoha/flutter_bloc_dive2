@@ -265,8 +265,7 @@ class _TodoAppBlocState extends State<TodoAppBloc> {
                 padding: const EdgeInsets.only(right: 10.0),
                 child: BlocListener<TodoListBloc, TodoListState>(
                   listener: (context, state) {
-                    final activeCount = state
-                        .todoList
+                    final activeCount = state.todoList
                         .where((todo) => !todo.isCompleted)
                         .length;
                     context
@@ -351,7 +350,6 @@ class _TodoAppBlocState extends State<TodoAppBloc> {
                 //         ),
                 //       ),
 
-
                 // engaging BlocListener
                 MultiBlocListener(
               listeners: [
@@ -362,7 +360,7 @@ class _TodoAppBlocState extends State<TodoAppBloc> {
                         SetFilteredTodoEvent(
                           searchKeyword:
                               context.read<TodoSearchBloc>().state.keyword,
-                          filter: context.read<TodoFilterBloc>().state.filter,
+                          filter: state.filter,
                           todoList: context.read<TodoListBloc>().state.todoList,
                         ),
                       );
@@ -373,8 +371,7 @@ class _TodoAppBlocState extends State<TodoAppBloc> {
                     listener: (context, state) {
                   context.read<FilteredTodoBloc>().add(
                         SetFilteredTodoEvent(
-                          searchKeyword:
-                              context.read<TodoSearchBloc>().state.keyword,
+                          searchKeyword: state.keyword,
                           filter: context.read<TodoFilterBloc>().state.filter,
                           todoList: context.read<TodoListBloc>().state.todoList,
                         ),
@@ -389,7 +386,7 @@ class _TodoAppBlocState extends State<TodoAppBloc> {
                           searchKeyword:
                               context.read<TodoSearchBloc>().state.keyword,
                           filter: context.read<TodoFilterBloc>().state.filter,
-                          todoList: context.read<TodoListBloc>().state.todoList,
+                          todoList: state.todoList,
                         ),
                       );
                 }),
