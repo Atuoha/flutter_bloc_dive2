@@ -262,16 +262,35 @@ class _TodoAppBlocState extends State<TodoAppBloc> {
           actions: [
             // using streamSubscription
             Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: Text(
-                '${context.watch<ActiveTodoBloc>().state.activeTodoCount} Items Left',
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            )
+                padding: const EdgeInsets.only(right: 10.0),
+                child: BlocListener<TodoListBloc, TodoListState>(
+                  listener: (context, state) {
+                    final activeCount = state
+                        .todoList
+                        .where((todo) => !todo.isCompleted)
+                        .length;
+                    context
+                        .read<ActiveTodoBloc>()
+                        .add(UpdateActiveTodo(activeTodoCount: activeCount));
+                  },
+                  child: Text(
+                    '${context.watch<ActiveTodoBloc>().state.activeTodoCount} Items Left',
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                )
 
-            // engaging BlocListener
+                // using StreamSubscription
+                // Text(
+                //   '${context.watch<ActiveTodoBloc>().state.activeTodoCount} Items Left',
+                //   style: const TextStyle(
+                //     color: Colors.white,
+                //   ),
+                // ),
+                )
+
+            // engaging BlocListener on Cubit
             // BlocListener<TodoListCubit, TodoListState>(
             //   listener: (context, state) {
             //     var count =
@@ -331,6 +350,8 @@ class _TodoAppBlocState extends State<TodoAppBloc> {
                 //           ),
                 //         ),
                 //       ),
+
+
                 // engaging BlocListener
                 MultiBlocListener(
               listeners: [

@@ -141,9 +141,18 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => TodoListBloc()),
         BlocProvider(create: (context) => TodoSearchBloc()),
         BlocProvider(create: (context) => TodoFilterBloc()),
+
+       // using StreamSubcription
+        // BlocProvider(
+        //   create: (context) => ActiveTodoBloc(
+        //     todoListBloc: BlocProvider.of<TodoListBloc>(context),
+        //     initialTodoCount:
+        //     context.read<TodoListBloc>().state.todoList.length,
+        //   ),
+        // ),
+
         BlocProvider(
           create: (context) => ActiveTodoBloc(
-            todoListBloc: BlocProvider.of<TodoListBloc>(context),
             initialTodoCount:
             context.read<TodoListBloc>().state.todoList.length,
           ),
