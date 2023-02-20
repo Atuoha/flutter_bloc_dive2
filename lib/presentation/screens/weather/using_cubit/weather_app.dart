@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/screens/settings.dart';
 import 'components/search_weather.dart';
 
 class WeatherAppCubit extends StatefulWidget {
@@ -16,12 +17,13 @@ class _WeatherAppCubitState extends State<WeatherAppCubit> {
       appBar: AppBar(
         title: const Text('WeatherApp Bloc'),
         bottom: const PreferredSize(
-          preferredSize:  Size.fromHeight(50),
+          preferredSize: Size.fromHeight(50),
           child: SearchWeather(),
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () =>
+                Navigator.of(context).pushNamed(SettingsScreen.routeName),
             icon: const Icon(Icons.settings),
           ),
         ],

@@ -13,6 +13,7 @@ import '../screens/using_bloc/theme_switcher.dart';
 import '../screens/using_cubit/cubit_relationship.dart';
 import '../screens/using_cubit/cubit_screen1.dart';
 import '../screens/using_cubit/theme_switcher.dart';
+import '../screens/weather/using_cubit/screens/settings.dart';
 
 class RouteManager {
   Route? onGenerateRoute(RouteSettings routeSettings) {
@@ -85,6 +86,10 @@ class RouteManager {
       case WeatherAppCubit.routeName:
         return MaterialPageRoute(
           builder: (context) => const WeatherAppCubit(),
+        );
+      case SettingsScreen.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const SettingsScreen(),
         );
     }
     return null;
