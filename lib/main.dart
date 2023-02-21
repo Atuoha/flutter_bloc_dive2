@@ -19,10 +19,12 @@ import 'constants/enums/apptheme.dart';
 import 'observer/app_bloc_observer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'business_logic/todo/cubits/cubits.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'business_logic/todo/bloc/bloc.dart';
 
 void main() async {
+  await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized();
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
