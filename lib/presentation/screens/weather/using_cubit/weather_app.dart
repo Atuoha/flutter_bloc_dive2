@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/screens/settings.dart';
+import 'package:flutter_bloc_dive2/services/weather_api_services.dart';
+import '../../../../repositories/weather_repository.dart';
 import 'components/search_weather.dart';
+import 'package:http/http.dart' as http;
 
 class WeatherAppCubit extends StatefulWidget {
   const WeatherAppCubit({Key? key}) : super(key: key);
@@ -11,6 +14,21 @@ class WeatherAppCubit extends StatefulWidget {
 }
 
 class _WeatherAppCubitState extends State<WeatherAppCubit> {
+  @override
+  void initState() {
+    _fetchWeather();
+    super.initState();
+  }
+
+  // fetch Weather
+  void _fetchWeather() {
+    WeatherRepository(
+      weatherApiService: WeatherApiServices(
+        httpClient: http.Client(),
+      ),
+    ).fetchWeather('Owerri');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

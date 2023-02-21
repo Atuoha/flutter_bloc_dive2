@@ -23,11 +23,15 @@ class WeatherRepository {
       if (kDebugMode) {
         print(weather);
       }
-
+      // final Weather weather = tempWeather.copyWith(
+      //     name: directGeocoding.name, country: directGeocoding.country);
       return weather;
     } on WeatherException catch (e) {
-      throw CustomError(errMsg: e.message!);
+      print('Error From WEATHER');
+      throw CustomError(errMsg: e.message.toString());
     } catch (e) {
+      print('Error From Catch');
+      print(e);
       throw CustomError(errMsg: e.toString());
     }
   }

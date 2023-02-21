@@ -24,12 +24,12 @@ class WeatherApiServices {
           'limit': kLimit,
           'appid': dotenv.env['APPID'],
         });
-
+// https://api.openweathermap.org//geo/1.0/direct?q=$city&appid=$appID
     try {
       final http.Response response = await httpClient.get(uri);
 
       if (response.statusCode != 200) {
-        throw httpErrorHandler(response);
+        throw Exception(httpErrorHandler(response));
       }
       final responseBody = json.decode(response.body);
 
@@ -41,6 +41,7 @@ class WeatherApiServices {
           DirectGeocoding.fromJson(responseBody);
       return directGeocoding;
     } catch (e) {
+      print('Error FROM DirectGeocoding');
       rethrow;
     }
   }
@@ -51,8 +52,8 @@ class WeatherApiServices {
       host: kAPIHost,
       path: '/data/2.5/weather',
       queryParameters: {
-        'lat': directGeocoding.lat,
-        'lot': directGeocoding.lot,
+        'lat': '${directGeocoding.lat}',
+        'lon': '${directGeocoding.lon}',
         'limit': kLimit,
         'units': kUnit,
         'appid': dotenv.env['APPID'],
@@ -70,6 +71,7 @@ class WeatherApiServices {
       final Weather weather = Weather.fromJson(weatherJson);
       return weather;
     } catch (e) {
+      print('Error FROM Weather');
       rethrow;
     }
   }
