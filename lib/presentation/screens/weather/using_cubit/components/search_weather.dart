@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/todo/cubits/cubits.dart';
 
 class SearchWeather extends StatefulWidget {
-  const SearchWeather({
+  SearchWeather({
     Key? key,
+    required this.fetchWeather,
   }) : super(key: key);
+  Function fetchWeather;
 
   @override
   State<SearchWeather> createState() => _SearchWeatherState();
@@ -29,10 +31,7 @@ class _SearchWeatherState extends State<SearchWeather> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8.0,
-        vertical: 5
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
       child: TextFormField(
         controller: searchKeyword,
         decoration: InputDecoration(
@@ -48,9 +47,7 @@ class _SearchWeatherState extends State<SearchWeather> {
                 )
               : const SizedBox.shrink(),
           suffixIcon: GestureDetector(
-            onTap: () {
-              print('sdfsdf');
-            },
+            onTap: () => widget.fetchWeather(searchKeyword.text),
             child: const Icon(Icons.search),
           ),
           fillColor: Colors.white70,

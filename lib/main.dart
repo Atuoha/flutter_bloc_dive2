@@ -1,11 +1,12 @@
 import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/bloc/counter/counter_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/cubits/counter/counter_cubit.dart';
 import 'package:flutter_bloc_dive2/presentation/routes/route_manager.dart';
+import 'package:flutter_bloc_dive2/repositories/weather_repository.dart';
+import 'package:flutter_bloc_dive2/services/weather_api_services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'business_logic/bloc/color/color_bloc.dart';
 import 'business_logic/bloc/counter_for_color/counter_color_bloc.dart';
@@ -15,13 +16,14 @@ import 'business_logic/bloc/theme/theme_bloc.dart';
 import 'business_logic/cubits/color/color_cubit.dart';
 import 'business_logic/cubits/counter_for_color/counter_color_cubit.dart';
 import 'business_logic/cubits/theme/theme_cubit.dart';
+import 'business_logic/weather/weather/weather_cubit.dart';
 import 'constants/enums/apptheme.dart';
 import 'observer/app_bloc_observer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'business_logic/todo/cubits/cubits.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 import 'business_logic/todo/bloc/bloc.dart';
+import 'package:http/http.dart' as http;
 
 void main() async {
   await dotenv.load(fileName: '.env');
@@ -144,7 +146,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => TodoSearchBloc()),
         BlocProvider(create: (context) => TodoFilterBloc()),
 
-       // using StreamSubcription
+        // using StreamSubcription
         // BlocProvider(
         //   create: (context) => ActiveTodoBloc(
         //     todoListBloc: BlocProvider.of<TodoListBloc>(context),
@@ -156,7 +158,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ActiveTodoBloc(
             initialTodoCount:
-            context.read<TodoListBloc>().state.todoList.length,
+                context.read<TodoListBloc>().state.todoList.length,
           ),
         ),
 
@@ -173,11 +175,21 @@ class MyApp extends StatelessWidget {
         // engaging BlocListener
         BlocProvider(
           create: (context) => FilteredTodoBloc(
-            initialTodoList: BlocProvider.of<TodoListBloc>(context).state.todoList,
+            initialTodoList:
+                BlocProvider.of<TodoListBloc>(context).state.todoList,
           ),
         ),
 
-
+        // WeatherApp
+        BlocProvider(
+          create: (context) => WeatherCubit(
+            weatherRepository: WeatherRepository(
+              weatherApiService: WeatherApiServices(
+                httpClient: http.Client(),
+              ),
+            ),
+          ),
+        )
       ],
       // normal
       // child: BlocBuilder<ThemeBloc, ThemeState>(
