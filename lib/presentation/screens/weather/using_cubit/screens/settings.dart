@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_dive2/business_logic/weather/temp_settings/temp_settings_cubit.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -16,8 +18,9 @@ class SettingsScreen extends StatelessWidget {
           horizontal: 10,
         ),
         child: SwitchListTile(
-          value: true,
-          onChanged: (value) {},
+          value: context.watch<TempSettingsCubit>().state.isCelsius,
+          onChanged: (value) =>
+              context.read<TempSettingsCubit>().switchTempUnit(),
           title: const Text('Temperature Unit'),
           subtitle: const Text('Celsius/Fahrenheit (Default Celsius'),
         ),

@@ -1,0 +1,1 @@
+enum TempUnit { celsius, fahrenheit }

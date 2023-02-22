@@ -16,6 +16,7 @@ import 'business_logic/bloc/theme/theme_bloc.dart';
 import 'business_logic/cubits/color/color_cubit.dart';
 import 'business_logic/cubits/counter_for_color/counter_color_cubit.dart';
 import 'business_logic/cubits/theme/theme_cubit.dart';
+import 'business_logic/weather/temp_settings/temp_settings_cubit.dart';
 import 'business_logic/weather/weather/weather_cubit.dart';
 import 'constants/enums/apptheme.dart';
 import 'observer/app_bloc_observer.dart';
@@ -189,7 +190,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ),
+
+        BlocProvider(create: (context) => TempSettingsCubit()),
       ],
       // normal
       // child: BlocBuilder<ThemeBloc, ThemeState>(

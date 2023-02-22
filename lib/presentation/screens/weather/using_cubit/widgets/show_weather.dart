@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:recase/recase.dart';
 
+import '../../../../../business_logic/weather/temp_settings/temp_settings_cubit.dart';
 import '../../../../../data/models/weather/weather.dart';
 
 class ShowWeather extends StatelessWidget {
@@ -13,8 +15,10 @@ class ShowWeather extends StatelessWidget {
 
   final double _kSize = 50;
 
-  String formatTemp(double temp) {
-    return '${temp.toStringAsFixed(2)}°C';
+  String formatTemp(double temp, BuildContext context) {
+    return context.watch<TempSettingsCubit>().state.isCelsius
+        ? '${temp.toStringAsFixed(2)}°C'
+        : '${temp.toStringAsFixed(2)}°F';
   }
 
   FadeInImage loadWeatherIcon(String icon) {
@@ -54,7 +58,7 @@ class ShowWeather extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              formatTemp(weather.temp),
+              formatTemp(weather.temp, context),
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 25,
@@ -63,9 +67,9 @@ class ShowWeather extends StatelessWidget {
             const SizedBox(width: 20),
             Column(
               children: [
-                Text(formatTemp(weather.minTemp)),
+                Text(formatTemp(weather.minTemp, context)),
                 const SizedBox(height: 5),
-                Text(formatTemp(weather.maxTemp)),
+                Text(formatTemp(weather.maxTemp, context)),
               ],
             ),
           ],

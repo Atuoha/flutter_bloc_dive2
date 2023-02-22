@@ -48,6 +48,7 @@ dependencies:
   recase: ^4.1.0
   flutter_dotenv: ^5.0.2
   loading_animation_widget: ^1.2.0+4
+  connectivity_plus: ^3.0.3
 
 
 dev_dependencies:
