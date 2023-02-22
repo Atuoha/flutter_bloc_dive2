@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/screens/settings.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/widgets/weather_body.dart';
+import '../../../../business_logic/weather/theme/theme_cubit.dart';
 import '../../../../business_logic/weather/weather/weather_cubit.dart';
+import '../../../../constants/enums/apptheme.dart';
 import 'widgets/search_weather.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -67,8 +69,6 @@ class _WeatherAppCubitState extends State<WeatherAppCubit> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +81,15 @@ class _WeatherAppCubitState extends State<WeatherAppCubit> {
           ),
         ),
         actions: [
+          IconButton(
+            onPressed: () => context.read<WeatherThemeCubit>().toggleTheme(),
+            icon: Icon(
+              context.watch<WeatherThemeCubit>().state.theme == AppTheme.dark
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+            ),
+          ),
+          const SizedBox(width: 5),
           IconButton(
             onPressed: () =>
                 Navigator.of(context).pushNamed(SettingsScreen.routeName),

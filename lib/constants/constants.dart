@@ -2,6 +2,7 @@ const kAPIHost = 'api.openweathermap.org';
 const kIconUrl = 'www.openweathermap.org';
 const kLimit = '1';
 const kUnit = 'metric';
+const kMinMax = 20;
 
 
 

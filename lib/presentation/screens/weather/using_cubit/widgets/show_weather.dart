@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:recase/recase.dart';
 
 import '../../../../../business_logic/weather/temp_settings/temp_settings_cubit.dart';
@@ -18,7 +17,7 @@ class ShowWeather extends StatelessWidget {
   String formatTemp(double temp, BuildContext context) {
     return context.watch<TempSettingsCubit>().state.isCelsius
         ? '${temp.toStringAsFixed(2)}°C'
-        : '${temp.toStringAsFixed(2)}°F';
+        : '${((temp * 9 /5) + 32).toStringAsFixed(2)}°F';
   }
 
   FadeInImage loadWeatherIcon(String icon) {

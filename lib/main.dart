@@ -17,6 +17,7 @@ import 'business_logic/cubits/color/color_cubit.dart';
 import 'business_logic/cubits/counter_for_color/counter_color_cubit.dart';
 import 'business_logic/cubits/theme/theme_cubit.dart';
 import 'business_logic/weather/temp_settings/temp_settings_cubit.dart';
+import 'business_logic/weather/theme/theme_cubit.dart';
 import 'business_logic/weather/weather/weather_cubit.dart';
 import 'constants/enums/apptheme.dart';
 import 'observer/app_bloc_observer.dart';
@@ -56,12 +57,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => CounterBloc(),
         ),
-        BlocProvider(
-          create: (context) => ThemeBloc(),
-        ),
-        BlocProvider(
-          create: (context) => ThemeCubit(),
-        ),
+        // BlocProvider(
+        //   create: (context) => ThemeBloc(),
+        // ),
+        // BlocProvider(
+        //   create: (context) => ThemeCubit(),
+        // ),
 
         BlocProvider(
           create: (context) => ColorCubit(),
@@ -72,9 +73,9 @@ class MyApp extends StatelessWidget {
           create: (context) => HydCounterBloc(),
         ),
 
-        BlocProvider(
-          create: (context) => HydThemeBloc(),
-        ),
+        // BlocProvider(
+        //   create: (context) => HydThemeBloc(),
+        // ),
 
         // cubit to cubit
         // BlocProvider(
@@ -192,6 +193,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
+        BlocProvider(
+          create: (context) =>
+              WeatherThemeCubit(weatherCubit: context.read<WeatherCubit>()),
+        ),
+
         BlocProvider(create: (context) => TempSettingsCubit()),
       ],
       // normal
@@ -209,10 +215,11 @@ class MyApp extends StatelessWidget {
       // ),
 
       // hydrated_bloc version
-      child: BlocBuilder<HydThemeBloc, HydThemeState>(
+      child: BlocBuilder<WeatherThemeCubit, WeatherThemeState>(
         builder: (context, state) {
+          print(state.theme);
           return MaterialApp(
-            theme: state.theme == AppThemed.dark
+            theme: state.theme == AppTheme.dark
                 ? ThemeData.dark()
                 : ThemeData.light(),
             onGenerateRoute: routeManager?.onGenerateRoute,
