@@ -193,9 +193,15 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
+        // using Cubit StreamSubscription
+        // BlocProvider(
+        //   create: (context) =>
+        //       WeatherThemeCubit(weatherCubit: context.read<WeatherCubit>()),
+        // ),
+
+        // using BlocListener
         BlocProvider(
-          create: (context) =>
-              WeatherThemeCubit(weatherCubit: context.read<WeatherCubit>()),
+          create: (context) => WeatherThemeCubit(),
         ),
 
         BlocProvider(create: (context) => TempSettingsCubit()),
@@ -215,7 +221,11 @@ class MyApp extends StatelessWidget {
       // ),
 
       // hydrated_bloc version
-      child: BlocBuilder<WeatherThemeCubit, WeatherThemeState>(
+      child: BlocListener<WeatherCubit, WeatherState>(
+  listener: (context, state) {
+    context.read<WeatherThemeCubit>().changeTheme(state.weather.temp);
+  },
+  child: BlocBuilder<WeatherThemeCubit, WeatherThemeState>(
         builder: (context, state) {
           print(state.theme);
           return MaterialApp(
@@ -226,6 +236,7 @@ class MyApp extends StatelessWidget {
           );
         },
       ),
+),
     );
   }
 }
