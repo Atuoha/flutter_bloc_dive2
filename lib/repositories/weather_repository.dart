@@ -26,7 +26,7 @@ class WeatherRepository {
 
       return weather;
     } on WeatherException catch (e) {
-      throw CustomError(errMsg: e.message.toString());
+      throw CustomError(errMsg: e.message ?? 'Can not find $city');
     } catch (e) {
       throw CustomError(errMsg: e.toString());
     }

@@ -11,18 +11,9 @@ class WeatherState extends Equatable {
       required this.error});
 
   factory WeatherState.initial() => WeatherState(
-        weather: Weather(
-          description: '',
-          minTemp: 0.0,
-          name: '',
-          icon: '',
-          country: '',
-          temp: 0.0,
-          maxTemp: 0.0,
-          lastUpdated: DateTime.now(),
-        ),
+        weather: Weather.initial(),
         weatherStatus: WeatherStatus.initial,
-        error: const CustomError(errMsg: ''),
+        error: const CustomError(),
       );
 
   @override

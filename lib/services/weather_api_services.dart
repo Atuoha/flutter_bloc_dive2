@@ -29,7 +29,7 @@ class WeatherApiServices {
       final http.Response response = await httpClient.get(uri);
 
       if (response.statusCode != 200) {
-        throw Exception(httpErrorHandler(response));
+        throw httpErrorHandler(response);
       }
       final responseBody = json.decode(response.body);
 
