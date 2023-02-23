@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recase/recase.dart';
-
-import '../../../../../business_logic/weather/temp_settings/temp_settings_cubit.dart';
+import '../../../../../business_logic/weather/cubit/cubits.dart';
 import '../../../../../data/models/weather/weather.dart';
 
 class ShowWeather extends StatelessWidget {

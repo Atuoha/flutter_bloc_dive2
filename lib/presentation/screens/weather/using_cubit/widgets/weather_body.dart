@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/widgets/show_weather.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import '../../../../../business_logic/weather/weather/weather_cubit.dart';
+import '../../../../../business_logic/weather/cubit/cubits.dart';
+
 import '../../../../../constants/enums/weather_status.dart';
 import '../components/error_dialog.dart';
 

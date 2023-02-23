@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/bloc/counter/counter_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/cubits/counter/counter_cubit.dart';
+import 'package:flutter_bloc_dive2/business_logic/weather/bloc/blocs.dart';
 import 'package:flutter_bloc_dive2/presentation/routes/route_manager.dart';
 import 'package:flutter_bloc_dive2/repositories/weather_repository.dart';
 import 'package:flutter_bloc_dive2/services/weather_api_services.dart';
@@ -16,9 +17,7 @@ import 'business_logic/bloc/theme/theme_bloc.dart';
 import 'business_logic/cubits/color/color_cubit.dart';
 import 'business_logic/cubits/counter_for_color/counter_color_cubit.dart';
 import 'business_logic/cubits/theme/theme_cubit.dart';
-import 'business_logic/weather/temp_settings/temp_settings_cubit.dart';
-import 'business_logic/weather/theme/theme_cubit.dart';
-import 'business_logic/weather/weather/weather_cubit.dart';
+import '../../../../business_logic/weather/cubit/cubits.dart';
 import 'constants/enums/apptheme.dart';
 import 'observer/app_bloc_observer.dart';
 import 'package:path_provider/path_provider.dart';
@@ -182,7 +181,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
-        // WeatherApp
+        // Cubit WeatherApp
         BlocProvider(
           create: (context) => WeatherCubit(
             weatherRepository: WeatherRepository(
@@ -205,6 +204,23 @@ class MyApp extends StatelessWidget {
         ),
 
         BlocProvider(create: (context) => TempSettingsCubit()),
+
+        // USING BLoc for Weather
+        BlocProvider(create: (context) => TempSettingsBloc()),
+        BlocProvider(
+          create: (context) => ThemeSettingsBloc(
+            weatherBloc: context.read<WeatherBloc>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => WeatherBloc(
+            weatherRepository: WeatherRepository(
+              weatherApiService: WeatherApiServices(
+                httpClient: http.Client(),
+              ),
+            ),
+          ),
+        )
       ],
       // normal
       // child: BlocBuilder<ThemeBloc, ThemeState>(
@@ -220,12 +236,26 @@ class MyApp extends StatelessWidget {
       //   },
       // ),
 
-      // hydrated_bloc version
-      child: BlocListener<WeatherCubit, WeatherState>(
-  listener: (context, state) {
-    context.read<WeatherThemeCubit>().changeTheme(state.weather.temp);
-  },
-  child: BlocBuilder<WeatherThemeCubit, WeatherThemeState>(
+      // Weather under Cubit
+      // child: BlocListener<WeatherCubit, WeatherState>(
+      //   listener: (context, state) {
+      //     context.read<WeatherThemeCubit>().changeTheme(state.weather.temp);
+      //   },
+      //   child: BlocBuilder<WeatherThemeCubit, WeatherThemeState>(
+      //     builder: (context, state) {
+      //       print(state.theme);
+      //       return MaterialApp(
+      //         theme: state.theme == AppTheme.dark
+      //             ? ThemeData.dark()
+      //             : ThemeData.light(),
+      //         onGenerateRoute: routeManager?.onGenerateRoute,
+      //       );
+      //     },
+      //   ),
+      // ),
+
+      // Weather under Bloc
+      child: BlocBuilder<ThemeSettingsBloc, ThemeSettingsState>(
         builder: (context, state) {
           print(state.theme);
           return MaterialApp(
@@ -236,7 +266,6 @@ class MyApp extends StatelessWidget {
           );
         },
       ),
-),
     );
   }
 }

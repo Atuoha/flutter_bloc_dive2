@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc_dive2/repositories/weather_repository.dart';
-import '../../../constants/enums/weather_status.dart';
-import '../../../data/models/weather/custom_error.dart';
-import '../../../data/models/weather/weather.dart';
+import '../../../../constants/enums/weather_status.dart';
+import '../../../../data/models/weather/custom_error.dart';
+import '../../../../data/models/weather/weather.dart';
 
 part 'weather_state.dart';
 

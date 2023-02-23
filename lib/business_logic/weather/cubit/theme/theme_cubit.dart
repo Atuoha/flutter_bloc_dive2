@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc_dive2/business_logic/weather/weather/weather_cubit.dart';
+import '../weather/weather_cubit.dart';
 import 'package:meta/meta.dart';
-import '../../../constants/constants.dart';
-import '../../../constants/enums/apptheme.dart';
+import '../../../../constants/constants.dart';
+import '../../../../constants/enums/apptheme.dart';
 
 part 'theme_state.dart';
 
