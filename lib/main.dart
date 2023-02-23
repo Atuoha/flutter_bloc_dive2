@@ -17,7 +17,6 @@ import 'business_logic/bloc/theme/theme_bloc.dart';
 import 'business_logic/cubits/color/color_cubit.dart';
 import 'business_logic/cubits/counter_for_color/counter_color_cubit.dart';
 import 'business_logic/cubits/theme/theme_cubit.dart';
-import '../../../../business_logic/weather/cubit/cubits.dart';
 import 'constants/enums/apptheme.dart';
 import 'observer/app_bloc_observer.dart';
 import 'package:path_provider/path_provider.dart';
@@ -181,15 +180,15 @@ class MyApp extends StatelessWidget {
         ),
 
         // Cubit WeatherApp
-        BlocProvider(
-          create: (context) => WeatherCubit(
-            weatherRepository: WeatherRepository(
-              weatherApiService: WeatherApiServices(
-                httpClient: http.Client(),
-              ),
-            ),
-          ),
-        ),
+        // BlocProvider(
+        //   create: (context) => WeatherCubit(
+        //     weatherRepository: WeatherRepository(
+        //       weatherApiService: WeatherApiServices(
+        //         httpClient: http.Client(),
+        //       ),
+        //     ),
+        //   ),
+        // ),
 
         // using Cubit StreamSubscription
         // BlocProvider(
@@ -217,10 +216,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ThemeSettingsBloc(
-            weatherBloc: context.read<WeatherBloc>(),
-          ),
+              // weatherBloc: context.read<WeatherBloc>(),
+              ),
         ),
-
       ],
       // normal
       // child: BlocBuilder<ThemeBloc, ThemeState>(
@@ -255,16 +253,23 @@ class MyApp extends StatelessWidget {
       // ),
 
       // Weather under Bloc
-      child: BlocBuilder<ThemeSettingsBloc, ThemeSettingsState>(
-        builder: (context, state) {
-          print(state.theme);
-          return MaterialApp(
-            theme: state.theme == AppTheme.dark
-                ? ThemeData.dark()
-                : ThemeData.light(),
-            onGenerateRoute: routeManager?.onGenerateRoute,
-          );
+      child: BlocListener<WeatherBloc, WeatherState>(
+        listener: (context, state) {
+          context
+              .read<ThemeSettingsBloc>()
+              .switchTempByTemp(state.weather.temp);
         },
+        child: BlocBuilder<ThemeSettingsBloc, ThemeSettingsState>(
+          builder: (context, state) {
+            print(state.theme);
+            return MaterialApp(
+              theme: state.theme == AppTheme.dark
+                  ? ThemeData.dark()
+                  : ThemeData.light(),
+              onGenerateRoute: routeManager?.onGenerateRoute,
+            );
+          },
+        ),
       ),
     );
   }
