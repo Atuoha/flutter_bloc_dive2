@@ -4,28 +4,28 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/screens/settings.dart';
-import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/widgets/weather_body.dart';
-import '../../../../business_logic/weather/cubit/cubits.dart';
+import 'package:flutter_bloc_dive2/business_logic/weather/bloc/blocs.dart';
+import 'screens/settings.dart';
 import '../../../../constants/enums/apptheme.dart';
+import 'widgets/weather_body.dart';
 import 'widgets/search_weather.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-class WeatherAppCubit extends StatefulWidget {
-  const WeatherAppCubit({Key? key}) : super(key: key);
-  static const routeName = '/weather_app_cubit';
+class WeatherAppBloc extends StatefulWidget {
+  const WeatherAppBloc({Key? key}) : super(key: key);
+  static const routeName = '/weather_app_bloc';
 
   @override
-  State<WeatherAppCubit> createState() => _WeatherAppCubitState();
+  State<WeatherAppBloc> createState() => _WeatherAppBlocState();
 }
 
-class _WeatherAppCubitState extends State<WeatherAppCubit> {
+class _WeatherAppBlocState extends State<WeatherAppBloc> {
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
   bool isInternetConnected = true;
 
   void _fetchWeather(BuildContext context, String city) {
-    context.read<WeatherCubit>().fetchWeather(city);
+    context.read<WeatherBloc>().fetchWeather(city);
   }
 
   @override
@@ -72,7 +72,7 @@ class _WeatherAppCubitState extends State<WeatherAppCubit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WeatherApp Cubit'),
+        title: const Text('WeatherApp Bloc'),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: SearchWeather(
@@ -81,9 +81,10 @@ class _WeatherAppCubitState extends State<WeatherAppCubit> {
         ),
         actions: [
           IconButton(
-            onPressed: () => context.read<WeatherThemeCubit>().toggleTheme(),
+            onPressed: () =>
+                context.read<ThemeSettingsBloc>().add(ToggleThemeEvent()),
             icon: Icon(
-              context.watch<WeatherThemeCubit>().state.theme == AppTheme.dark
+              context.watch<ThemeSettingsBloc>().state.theme == AppTheme.dark
                   ? Icons.dark_mode
                   : Icons.light_mode,
             ),
@@ -91,7 +92,7 @@ class _WeatherAppCubitState extends State<WeatherAppCubit> {
           const SizedBox(width: 5),
           IconButton(
             onPressed: () =>
-                Navigator.of(context).pushNamed(SettingsScreenCubit.routeName),
+                Navigator.of(context).pushNamed(SettingsScreenBloc.routeName),
             icon: const Icon(Icons.settings),
           ),
         ],

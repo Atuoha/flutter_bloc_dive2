@@ -21,7 +21,6 @@ import '../../../../business_logic/weather/cubit/cubits.dart';
 import 'constants/enums/apptheme.dart';
 import 'observer/app_bloc_observer.dart';
 import 'package:path_provider/path_provider.dart';
-import 'business_logic/todo/cubits/cubits.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'business_logic/todo/bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -199,19 +198,14 @@ class MyApp extends StatelessWidget {
         // ),
 
         // using BlocListener
-        BlocProvider(
-          create: (context) => WeatherThemeCubit(),
-        ),
-
-        BlocProvider(create: (context) => TempSettingsCubit()),
+        // BlocProvider(
+        //   create: (context) => WeatherThemeCubit(),
+        // ),
+        //
+        // BlocProvider(create: (context) => TempSettingsCubit()),
 
         // USING BLoc for Weather
         BlocProvider(create: (context) => TempSettingsBloc()),
-        BlocProvider(
-          create: (context) => ThemeSettingsBloc(
-            weatherBloc: context.read<WeatherBloc>(),
-          ),
-        ),
         BlocProvider(
           create: (context) => WeatherBloc(
             weatherRepository: WeatherRepository(
@@ -220,7 +214,13 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ),
+        BlocProvider(
+          create: (context) => ThemeSettingsBloc(
+            weatherBloc: context.read<WeatherBloc>(),
+          ),
+        ),
+
       ],
       // normal
       // child: BlocBuilder<ThemeBloc, ThemeState>(

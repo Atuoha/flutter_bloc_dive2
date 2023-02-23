@@ -7,6 +7,7 @@ import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/bloc_relation
 import 'package:flutter_bloc_dive2/presentation/screens/using_bloc/theme_switcher.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_cubit/cubit_relationship.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/using_cubit/theme_switcher.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/weather/using_bloc/weather_app.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/weather_app.dart';
 import 'event_transformer/event_transformer.dart';
 import 'hydrated_bloc/counter_app.dart';
@@ -49,6 +50,10 @@ class HomeScreen extends StatelessWidget {
             GridItem(
               title: 'WeatherApp Cubit',
               routeName: WeatherAppCubit.routeName,
+            ),
+            GridItem(
+              title: 'WeatherApp Bloc',
+              routeName: WeatherAppBloc.routeName,
             ),
             GridItem(
               title: 'Counter Using Cubit',

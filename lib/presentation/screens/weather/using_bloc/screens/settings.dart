@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../business_logic/weather/cubit/cubits.dart';
+import '../../../../../business_logic/weather/bloc/temp_settings/temp_settings_bloc.dart';
 
-
-class SettingsScreenCubit extends StatelessWidget {
-  const SettingsScreenCubit({Key? key}) : super(key: key);
-  static const routeName = '/settings_cubit';
+class SettingsScreenBloc extends StatelessWidget {
+  const SettingsScreenBloc({Key? key}) : super(key: key);
+  static const routeName = '/settings_bloc';
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +18,9 @@ class SettingsScreenCubit extends StatelessWidget {
           horizontal: 10,
         ),
         child: SwitchListTile(
-          value: context.watch<TempSettingsCubit>().state.isCelsius,
+          value: context.watch<TempSettingsBloc>().state.isCelsius,
           onChanged: (value) =>
-              context.read<TempSettingsCubit>().switchTempUnit(),
+              context.read<TempSettingsBloc>().add(ToggleTempSettingsEvent()),
           title: const Text('Temperature Unit'),
           subtitle: const Text('Celsius/Fahrenheit (Default Celsius'),
         ),

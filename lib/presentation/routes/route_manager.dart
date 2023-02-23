@@ -13,6 +13,8 @@ import '../screens/using_bloc/theme_switcher.dart';
 import '../screens/using_cubit/cubit_relationship.dart';
 import '../screens/using_cubit/cubit_screen1.dart';
 import '../screens/using_cubit/theme_switcher.dart';
+import '../screens/weather/using_bloc/screens/settings.dart';
+import '../screens/weather/using_bloc/weather_app.dart';
 import '../screens/weather/using_cubit/screens/settings.dart';
 
 class RouteManager {
@@ -87,9 +89,18 @@ class RouteManager {
         return MaterialPageRoute(
           builder: (context) => const WeatherAppCubit(),
         );
-      case SettingsScreen.routeName:
+      case WeatherAppBloc.routeName:
         return MaterialPageRoute(
-          builder: (context) => const SettingsScreen(),
+          builder: (context) => const WeatherAppBloc(),
+        );
+      case SettingsScreenCubit.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const SettingsScreenCubit(),
+        );
+
+      case SettingsScreenBloc.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const SettingsScreenBloc(),
         );
     }
     return null;

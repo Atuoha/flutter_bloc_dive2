@@ -27,9 +27,11 @@ class ThemeSettingsBloc extends Bloc<ThemeSettingsEvent, ThemeSettingsState> {
     });
 
     on<ToggleThemeEvent>((event, emit) {
-      emit(state.copyWith(
-          theme:
-              state.theme == AppTheme.light ? AppTheme.dark : AppTheme.light));
+      emit(
+        state.copyWith(
+          theme: state.theme == AppTheme.light ? AppTheme.dark : AppTheme.light,
+        ),
+      );
     });
   }
 
