@@ -49,6 +49,11 @@ dependencies:
   flutter_dotenv: ^5.0.2
   loading_animation_widget: ^1.2.0+4
   connectivity_plus: ^3.0.3
+  firebase_auth: ^4.2.2
+  google_sign_in: ^6.0.1
+  firebase_core: ^2.7.0
+  cloud_firestore: ^4.4.3
+  validators: ^3.0.0
 
 
 dev_dependencies:

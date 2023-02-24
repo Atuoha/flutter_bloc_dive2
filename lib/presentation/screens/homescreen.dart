@@ -9,6 +9,7 @@ import 'package:flutter_bloc_dive2/presentation/screens/using_cubit/cubit_relati
 import 'package:flutter_bloc_dive2/presentation/screens/using_cubit/theme_switcher.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_bloc/weather_app.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/weather_app.dart';
+import 'authentication/using_cubit/auth_entry_cubit.dart';
 import 'event_transformer/event_transformer.dart';
 import 'hydrated_bloc/counter_app.dart';
 import 'using_bloc/bloc_screen1.dart';
@@ -39,6 +40,10 @@ class HomeScreen extends StatelessWidget {
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
           children: const [
+            GridItem(
+              title: 'Authentication Cubit',
+              routeName: AuthEntryCubit.routeName,
+            ),
             GridItem(
               title: 'Todo App Cubit',
               routeName: TodoAppCubit.routeName,

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,15 +19,19 @@ import 'business_logic/cubits/color/color_cubit.dart';
 import 'business_logic/cubits/counter_for_color/counter_color_cubit.dart';
 import 'business_logic/cubits/theme/theme_cubit.dart';
 import 'constants/enums/apptheme.dart';
+import 'firebase_options.dart';
 import 'observer/app_bloc_observer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'business_logic/todo/bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 
-void main() async {
-  await dotenv.load(fileName: '.env');
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FirebaseApp app = await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await dotenv.load(fileName: '.env');
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
         ? HydratedStorage.webStorageDirectory
