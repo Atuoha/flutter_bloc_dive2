@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/hydrated_bloc/counter_app.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/weather_app.dart';
 import '../screens/authentication/using_cubit/auth_entry_cubit.dart';
+import '../screens/authentication/using_cubit/screens/auth.dart';
 import '../screens/event_transformer/event_transformer.dart';
 import '../screens/homescreen.dart';
 import '../screens/screen2.dart';
@@ -107,6 +108,11 @@ class RouteManager {
       case AuthEntryCubit.routeName:
         return MaterialPageRoute(
           builder: (context) => const AuthEntryCubit(),
+        );
+
+      case AuthScreen.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const AuthScreen(),
         );
     }
     return null;

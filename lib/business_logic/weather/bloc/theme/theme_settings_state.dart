@@ -6,7 +6,7 @@ class ThemeSettingsState extends Equatable {
   const ThemeSettingsState({required this.theme});
 
   factory ThemeSettingsState.initial() =>
-      const ThemeSettingsState(theme: AppTheme.dark);
+      const ThemeSettingsState(theme: AppTheme.light);
 
   @override
   List<Object?> get props => [theme];

@@ -1,12 +1,13 @@
+import 'dart:ui';
+
 const kAPIHost = 'api.openweathermap.org';
 const kIconUrl = 'www.openweathermap.org';
 const kLimit = '1';
 const kUnit = 'metric';
 const kMinMax = 20;
 
-
-
-
+var primaryColor = const Color(0xFF2196F3);
+var secondaryColor = const Color(0xFF3F3D56);
 
 // https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
 
