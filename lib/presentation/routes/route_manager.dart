@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/screens/forgot_password.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/screens/retrieve_password.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/hydrated_bloc/counter_app.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/weather_app.dart';
 import '../screens/authentication/using_cubit/auth_entry_cubit.dart';
@@ -113,6 +115,16 @@ class RouteManager {
       case AuthScreen.routeName:
         return MaterialPageRoute(
           builder: (context) => const AuthScreen(),
+        );
+
+      case ForgotPasswordScreen.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const ForgotPasswordScreen(),
+        );
+
+      case RetrievePasswordScreen.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const RetrievePasswordScreen(),
         );
     }
     return null;

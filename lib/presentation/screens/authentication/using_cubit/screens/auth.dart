@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/widgets/loading.dart';
 import '../../../../../constants/constants.dart';
+import 'forgot_password.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key, this.isSignIn = true}) : super(key: key);
@@ -19,6 +20,7 @@ class _AuthScreenState extends State<AuthScreen> {
   TextEditingController phoneController = TextEditingController();
   bool isObscured = true;
   bool signInState = true;
+  bool isProcessing = false;
 
   @override
   void initState() {
@@ -55,6 +57,13 @@ class _AuthScreenState extends State<AuthScreen> {
           if (value!.isEmpty || value.length < 11) {
             return '$label needs to be valid';
           }
+        } else if (controller == emailController) {
+          if (value!.isEmpty ||
+              !value.contains('@') ||
+              !value.contains('.com') ||
+              value.length < 6) {
+            return '$label needs to be valid';
+          }
         } else {
           if (value!.isEmpty || value.length < 8) {
             return '$label needs to be valid';
@@ -73,7 +82,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       isObscured = !isObscured;
                     }),
                     child: Icon(
-                      isObscured ? Icons.visibility_off : Icons.visibility,
+                      isObscured ? Icons.visibility : Icons.visibility_off,
                     ),
                   )
                 : const SizedBox.shrink()
@@ -110,7 +119,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   // forgot password navigation
   void toForgotPasswordScreen() {
-    // todo navigate to forgot password
+    Navigator.of(context).pushNamed(ForgotPasswordScreen.routeName);
   }
 
   // text button
@@ -135,6 +144,9 @@ class _AuthScreenState extends State<AuthScreen> {
       return;
     }
     formKey.currentState!.save();
+    setState(() {
+      isProcessing = true;
+    });
     // todo handle local auth
   }
 
@@ -177,71 +189,74 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              Form(
-                key: formKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      signInState
-                          ? const SizedBox.shrink()
-                          : kTextField(
-                              controller: fullNameController,
-                              hintText: 'Enter Fullname',
-                              label: 'Fullname',
-                            ),
-                      const SizedBox(height: 10),
-                      kTextField(
-                        controller: emailController,
-                        hintText: 'Enter Email',
-                        label: 'Email Address',
-                      ),
-                      const SizedBox(height: 10),
-                      kTextField(
-                        controller: passwordController,
-                        hintText: 'Enter Password',
-                        label: 'Password',
-                      ),
-                      const SizedBox(height: 10),
-                      kElevatedButton(
-                        action: submitFnc,
-                        labelChild: Text(signInState ? 'Signin' : 'Signup'),
-                        isIconVisible: true,
-                      ),
-                      const SizedBox(height: 10),
-                      kElevatedButton(
-                        action: authenticate,
-                        labelChild: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
+              !isProcessing
+                  ? Form(
+                      key: formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(signInState ? 'Signin' : 'Signup'),
-                            const SizedBox(width: 7),
-                            Image.asset(
-                              'assets/images/google.png',
-                              width: 20,
+                            signInState
+                                ? const SizedBox.shrink()
+                                : kTextField(
+                                    controller: fullNameController,
+                                    hintText: 'Enter Fullname',
+                                    label: 'Fullname',
+                                  ),
+                            const SizedBox(height: 10),
+                            kTextField(
+                              controller: emailController,
+                              hintText: 'Enter Email',
+                              label: 'Email Address',
                             ),
+                            const SizedBox(height: 10),
+                            kTextField(
+                              controller: passwordController,
+                              hintText: 'Enter Password',
+                              label: 'Password',
+                            ),
+                            const SizedBox(height: 10),
+                            kElevatedButton(
+                              action: submitFnc,
+                              labelChild:
+                                  Text(signInState ? 'Signin' : 'Signup'),
+                              isIconVisible: true,
+                            ),
+                            const SizedBox(height: 10),
+                            kElevatedButton(
+                              action: authenticate,
+                              labelChild: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  Text(signInState ? 'Signin' : 'Signup'),
+                                  const SizedBox(width: 7),
+                                  Image.asset(
+                                    'assets/images/google.png',
+                                    width: 20,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                kTextButton(
+                                    title: 'Forgot Password?',
+                                    action: toForgotPasswordScreen),
+                                kTextButton(
+                                    title: signInState
+                                        ? 'Don\'t own an account? Signup'
+                                        : 'Own a account? Signin',
+                                    action: toggleSign),
+                              ],
+                            )
                           ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          kTextButton(
-                              title: 'Forgot Password',
-                              action: toForgotPasswordScreen),
-                          kTextButton(
-                              title: signInState
-                                  ? 'Don\'t own an account? Signup'
-                                  : 'Own a account? Signin',
-                              action: toggleSign),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              )
+                    )
+                  : const LoadingWidget()
             ],
           ),
         ),
