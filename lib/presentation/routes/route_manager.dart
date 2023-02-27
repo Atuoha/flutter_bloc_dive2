@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/screens/auth_flow/forgot_password.dart';
-import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/screens/auth_flow/retrieve_password.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/authentication/screens/auth_flow/forgot_password.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/authentication/screens/auth_flow/retrieve_password.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/hydrated_bloc/counter_app.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/weather_app.dart';
-import '../screens/authentication/using_cubit/auth_entry_cubit.dart';
-import '../screens/authentication/using_cubit/screens/auth_flow/auth.dart';
+import '../screens/authentication/screens/auth_flow/auth_entry.dart';
+import '../screens/authentication/screens/auth_flow/auth.dart';
+import '../screens/authentication/splash_entry.dart';
 import '../screens/event_transformer/event_transformer.dart';
 import '../screens/homescreen.dart';
 import '../screens/screen2.dart';
@@ -107,9 +108,17 @@ class RouteManager {
           builder: (context) => const SettingsScreenBloc(),
         );
 
-      case AuthEntryCubit.routeName:
+
+
+      //  authentication
+      case SplashEntry.routeName:
         return MaterialPageRoute(
-          builder: (context) => const AuthEntryCubit(),
+          builder: (context) => const SplashEntry(),
+        );
+
+      case AuthEntry.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const AuthEntry(),
         );
 
       case AuthScreen.routeName:

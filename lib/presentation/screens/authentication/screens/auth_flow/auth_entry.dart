@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/screens/auth_flow/auth.dart';
+import 'auth.dart';
 
-import '../../../../constants/constants.dart';
+import '../../../../../constants/constants.dart';
 
-class AuthEntryCubit extends StatelessWidget {
-  const AuthEntryCubit({Key? key}) : super(key: key);
-  static const routeName = '/auth_entry_cubit';
+class AuthEntry extends StatelessWidget {
+  const AuthEntry({Key? key}) : super(key: key);
+  static const routeName = '/auth_entry';
 
   void navigateToAuth({required bool isSignIn, required BuildContext context}) {
     //  todo implement navigateToAuth
@@ -34,6 +34,7 @@ class AuthEntryCubit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

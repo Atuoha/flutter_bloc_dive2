@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/widgets/loading.dart';
+import '../../widgets/loading.dart';
 import '../../../../../../constants/constants.dart';
-import 'auth.dart';
 import 'forgot_password.dart';
 
-class RetrievePasswordScreen extends StatefulWidget {
-  const RetrievePasswordScreen({Key? key}) : super(key: key);
-  static const routeName = '/retrieve_passwrod';
+class AuthScreen extends StatefulWidget {
+  const AuthScreen({Key? key, this.isSignIn = true}) : super(key: key);
+  final bool isSignIn;
+  static const routeName = '/authenticate';
 
   @override
-  State<RetrievePasswordScreen> createState() => _RetrievePasswordScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
+class _AuthScreenState extends State<AuthScreen> {
   final formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController password2Controller = TextEditingController();
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   bool isObscured = true;
-  bool isObscured2 = true;
+  bool signInState = true;
   bool isProcessing = false;
 
   @override
@@ -25,11 +27,9 @@ class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
     passwordController.addListener(() {
       setState(() {});
     });
-
-    password2Controller.addListener(() {
-      setState(() {});
+    setState(() {
+      signInState = widget.isSignIn;
     });
-
     super.initState();
   }
 
@@ -40,24 +40,33 @@ class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
     required String label,
   }) {
     return TextFormField(
-      keyboardType: TextInputType.text,
-      textInputAction: controller == password2Controller
+      keyboardType: controller == phoneController
+          ? TextInputType.phone
+          : TextInputType.text,
+      textInputAction: controller == passwordController
           ? TextInputAction.done
           : TextInputAction.next,
       controller: controller,
-      obscureText: controller == passwordController ? isObscured : isObscured2,
+      obscureText: controller == passwordController ? isObscured : false,
       validator: (value) {
-        if (controller == password2Controller) {
-          if (value!.isEmpty || value.length < 8) {
-            return '$label needs to be valid!';
+        if (controller == fullNameController) {
+          if (value!.isEmpty || value.length < 6) {
+            return '$label needs to be valid';
           }
-
-          if (value != passwordController.text) {
-            return 'Password mismatch!';
+        } else if (controller == phoneController) {
+          if (value!.isEmpty || value.length < 11) {
+            return '$label needs to be valid';
+          }
+        } else if (controller == emailController) {
+          if (value!.isEmpty ||
+              !value.contains('@') ||
+              !value.contains('.com') ||
+              value.length < 6) {
+            return '$label needs to be valid';
           }
         } else {
           if (value!.isEmpty || value.length < 8) {
-            return '$label needs to be valid!';
+            return '$label needs to be valid';
           }
         }
 
@@ -77,16 +86,7 @@ class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
                     ),
                   )
                 : const SizedBox.shrink()
-            : password2Controller.text.isNotEmpty
-                ? GestureDetector(
-                    onTap: () => setState(() {
-                      isObscured2 = !isObscured2;
-                    }),
-                    child: Icon(
-                      isObscured2 ? Icons.visibility : Icons.visibility_off,
-                    ),
-                  )
-                : const SizedBox.shrink(),
+            : const SizedBox.shrink(),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -117,12 +117,9 @@ class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
     );
   }
 
-  void navigateToAuth() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => const AuthScreen(),
-      ),
-    );
+  // forgot password navigation
+  void toForgotPasswordScreen() {
+    Navigator.of(context).pushNamed(ForgotPasswordScreen.routeName);
   }
 
   // text button
@@ -150,8 +147,20 @@ class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
     setState(() {
       isProcessing = true;
     });
-    // todo handle password retrieve
-    Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
+    // todo handle local auth
+  }
+
+  // google authenticate
+  void authenticate() {
+    FocusScope.of(context).unfocus();
+    // todo handle google auth
+  }
+
+  // toggle isSignIn
+  void toggleSign() {
+    setState(() {
+      signInState = !signInState;
+    });
   }
 
   @override
@@ -162,15 +171,17 @@ class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 backgroundImage: AssetImage(
-                  'assets/images/forgot_password.png',
+                  signInState
+                      ? 'assets/images/sign_in.png'
+                      : 'assets/images/sign_up.png',
                 ),
                 radius: 75,
               ),
               const SizedBox(height: 10),
               Text(
-                'Retrieve Password',
+                signInState ? 'Sign in your account' : 'Sign up account',
                 style: TextStyle(
                   color: secondaryColor,
                   fontSize: 20,
@@ -186,35 +197,61 @@ class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            signInState
+                                ? const SizedBox.shrink()
+                                : kTextField(
+                                    controller: fullNameController,
+                                    hintText: 'Enter Fullname',
+                                    label: 'Fullname',
+                                  ),
+                            const SizedBox(height: 10),
+                            kTextField(
+                              controller: emailController,
+                              hintText: 'Enter Email',
+                              label: 'Email Address',
+                            ),
+                            const SizedBox(height: 10),
                             kTextField(
                               controller: passwordController,
                               hintText: 'Enter Password',
                               label: 'Password',
                             ),
                             const SizedBox(height: 10),
-                            kTextField(
-                              controller: password2Controller,
-                              hintText: 'Enter Confirm Password',
-                              label: 'Confirm Password',
-                            ),
-                            const SizedBox(height: 10),
                             kElevatedButton(
                               action: submitFnc,
-                              labelChild: const Text('Submit'),
+                              labelChild:
+                                  Text(signInState ? 'Signin' : 'Signup'),
                               isIconVisible: true,
                             ),
                             const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                TextButton(
-                                  onPressed: () => navigateToAuth(),
-                                  child: Text(
-                                    'Want to cancel? Sign in',
-                                    style: TextStyle(color: primaryColor),
+                            kElevatedButton(
+                              action: authenticate,
+                              labelChild: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  Text(signInState ? 'Signin' : 'Signup'),
+                                  const SizedBox(width: 7),
+                                  Image.asset(
+                                    'assets/images/google.png',
+                                    width: 20,
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                kTextButton(
+                                    title: 'Forgot Password?',
+                                    action: toForgotPasswordScreen),
+                                kTextButton(
+                                    title: signInState
+                                        ? 'Don\'t own an account? Signup'
+                                        : 'Own a account? Signin',
+                                    action: toggleSign),
+                              ],
+                            )
                           ],
                         ),
                       ),
