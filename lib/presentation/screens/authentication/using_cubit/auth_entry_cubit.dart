@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/screens/auth.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/screens/auth_flow/auth.dart';
 
 import '../../../../constants/constants.dart';
 

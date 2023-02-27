@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/widgets/loading.dart';
 import 'retrieve_password.dart';
-import '../../../../../constants/constants.dart';
+import '../../../../../../constants/constants.dart';
 import 'auth.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {

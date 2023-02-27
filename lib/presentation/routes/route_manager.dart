@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/screens/forgot_password.dart';
-import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/screens/retrieve_password.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/screens/auth_flow/forgot_password.dart';
+import 'package:flutter_bloc_dive2/presentation/screens/authentication/using_cubit/screens/auth_flow/retrieve_password.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/hydrated_bloc/counter_app.dart';
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/weather_app.dart';
 import '../screens/authentication/using_cubit/auth_entry_cubit.dart';
-import '../screens/authentication/using_cubit/screens/auth.dart';
+import '../screens/authentication/using_cubit/screens/auth_flow/auth.dart';
 import '../screens/event_transformer/event_transformer.dart';
 import '../screens/homescreen.dart';
 import '../screens/screen2.dart';
