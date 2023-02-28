@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_dive2/business_logic/authentication/auth_bloc.dart';
+import 'package:flutter_bloc_dive2/business_logic/authentication/auth/auth_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/bloc/counter/counter_bloc.dart';
 import 'package:flutter_bloc_dive2/business_logic/cubits/counter/counter_cubit.dart';
 import 'package:flutter_bloc_dive2/business_logic/weather/bloc/blocs.dart';
@@ -14,6 +14,7 @@ import 'package:flutter_bloc_dive2/repositories/auth_repositories.dart';
 import 'package:flutter_bloc_dive2/repositories/weather_repository.dart';
 import 'package:flutter_bloc_dive2/services/weather_api_services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'business_logic/authentication/signin_cubit/sign_in_cubit.dart';
 import 'business_logic/bloc/color/color_bloc.dart';
 import 'business_logic/bloc/counter_for_color/counter_color_bloc.dart';
 import 'business_logic/bloc/hydrated_bloc/counter/hyd_counter_bloc.dart';
@@ -73,6 +74,13 @@ class MyApp extends StatelessWidget {
             ),
           ),
 
+          BlocProvider(
+            create: (context) => SignInCubit(
+              authRepository: context.read<AuthRepository>(),
+            ),
+          ),
+
+          //
           BlocProvider(
             create: (context) => CounterCubit(),
           ),

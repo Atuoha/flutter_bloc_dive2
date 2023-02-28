@@ -4,10 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fbauth;
 
-import '../../constants/enums/auth_status.dart';
-import '../../data/models/auth/custom_error.dart';
-import '../../data/models/auth/user.dart';
-import '../../repositories/auth_repositories.dart';
+import '../../../constants/enums/auth_status.dart';
+import '../../../data/models/auth/custom_error.dart';
+import '../../../data/models/auth/user.dart';
+import '../../../repositories/auth_repositories.dart';
 
 part 'auth_event.dart';
 

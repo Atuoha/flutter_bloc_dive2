@@ -5,6 +5,7 @@ import 'package:flutter_bloc_dive2/presentation/screens/hydrated_bloc/counter_ap
 import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/weather_app.dart';
 import '../screens/authentication/screens/auth_flow/auth_entry.dart';
 import '../screens/authentication/screens/auth_flow/auth.dart';
+import '../screens/authentication/screens/home.dart';
 import '../screens/authentication/splash_entry.dart';
 import '../screens/event_transformer/event_transformer.dart';
 import '../screens/homescreen.dart';
@@ -134,6 +135,11 @@ class RouteManager {
       case RetrievePasswordScreen.routeName:
         return MaterialPageRoute(
           builder: (context) => const RetrievePasswordScreen(),
+        );
+
+      case AuthHomeScreen.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const AuthHomeScreen(),
         );
     }
     return null;

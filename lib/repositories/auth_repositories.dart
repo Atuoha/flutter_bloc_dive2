@@ -9,8 +9,9 @@ class AuthRepository {
   final fbauth.FirebaseAuth firebaseAuth;
 
   AuthRepository({required this.firebaseFirestore, required this.firebaseAuth});
-
   Stream<fbauth.User?> get user => firebaseAuth.userChanges();
+
+
 
   // Sign up
   Future<void> signUp({
@@ -96,6 +97,8 @@ class AuthRepository {
       );
     }
   }
+
+  
 
   // sign out
   Future<void> signOut() async {
