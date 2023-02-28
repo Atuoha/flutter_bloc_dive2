@@ -1,4 +1,4 @@
-enum SignInStatus {
+enum AuthProcessStatus {
   initial,
   loading,
   success,

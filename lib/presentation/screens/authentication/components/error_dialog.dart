@@ -9,8 +9,8 @@ void errorDialog({required BuildContext context, required CustomError error}) {
     showCupertinoDialog(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: const Text('Opps! Error occurred'),
-        content: Text(error.errMsg),
+        title:  Text(error.code),
+        content: Text('${error.plugin}\n${error.errMsg}'),
         actions: [
           CupertinoDialogAction(
             child: const Text('Dismiss'),
@@ -23,8 +23,8 @@ void errorDialog({required BuildContext context, required CustomError error}) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-          title: const Text('Opps! Error occurred'),
-          content: Text(error.errMsg),
+          title:  Text(error.code),
+          content: Text('${error.plugin}\n${error.errMsg}'),
           actions: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(

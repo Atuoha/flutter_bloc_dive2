@@ -14,7 +14,7 @@ import 'package:flutter_bloc_dive2/repositories/auth_repositories.dart';
 import 'package:flutter_bloc_dive2/repositories/weather_repository.dart';
 import 'package:flutter_bloc_dive2/services/weather_api_services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'business_logic/authentication/signin_cubit/sign_in_cubit.dart';
+import 'business_logic/authentication/cubits.dart';
 import 'business_logic/bloc/color/color_bloc.dart';
 import 'business_logic/bloc/counter_for_color/counter_color_bloc.dart';
 import 'business_logic/bloc/hydrated_bloc/counter/hyd_counter_bloc.dart';
@@ -76,6 +76,12 @@ class MyApp extends StatelessWidget {
 
           BlocProvider(
             create: (context) => SignInCubit(
+              authRepository: context.read<AuthRepository>(),
+            ),
+          ),
+
+          BlocProvider(
+            create: (context) => SignUpCubit(
               authRepository: context.read<AuthRepository>(),
             ),
           ),

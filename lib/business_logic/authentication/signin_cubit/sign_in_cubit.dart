@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc_dive2/data/models/auth/custom_error.dart';
-import '../../../constants/enums/signin_status.dart';
+import '../../../constants/enums/auth_process_status.dart';
 import '../../../repositories/auth_repositories.dart';
 
 part 'sign_in_state.dart';
@@ -13,14 +13,14 @@ class SignInCubit extends Cubit<SignInState> {
 
   // signin
   Future<void> signIn({required String email, required String password}) async {
-    emit(state.copyWith(signInStatus: SignInStatus.loading));
+    emit(state.copyWith(signInStatus: AuthProcessStatus.loading));
     try {
       await authRepository.signIn(email: email, password: password);
-      emit(state.copyWith(signInStatus: SignInStatus.success));
+      emit(state.copyWith(signInStatus: AuthProcessStatus.success));
     } on CustomError catch (e) {
       emit(
         state.copyWith(
-          signInStatus: SignInStatus.error,
+          signInStatus: AuthProcessStatus.error,
           error: e,
         ),
       );

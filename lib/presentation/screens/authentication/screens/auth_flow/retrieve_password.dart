@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../../../constants/enums/fields.dart';
+import '../../components/text_field.dart';
 import '../../widgets/loading.dart';
 import '../../../../../../constants/constants.dart';
 import 'auth.dart';
@@ -6,7 +8,7 @@ import 'forgot_password.dart';
 
 class RetrievePasswordScreen extends StatefulWidget {
   const RetrievePasswordScreen({Key? key}) : super(key: key);
-  static const routeName = '/retrieve_passwrod';
+  static const routeName = '/retrieve_password';
 
   @override
   State<RetrievePasswordScreen> createState() => _RetrievePasswordScreenState();
@@ -14,6 +16,7 @@ class RetrievePasswordScreen extends StatefulWidget {
 
 class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
   final formKey = GlobalKey<FormState>();
+  AutovalidateMode autoValidateMode = AutovalidateMode.disabled;
   TextEditingController passwordController = TextEditingController();
   TextEditingController password2Controller = TextEditingController();
   bool isObscured = true;
@@ -31,67 +34,6 @@ class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
     });
 
     super.initState();
-  }
-
-  // textField
-  Widget kTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required String label,
-  }) {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      textInputAction: controller == password2Controller
-          ? TextInputAction.done
-          : TextInputAction.next,
-      controller: controller,
-      obscureText: controller == passwordController ? isObscured : isObscured2,
-      validator: (value) {
-        if (controller == password2Controller) {
-          if (value!.isEmpty || value.length < 8) {
-            return '$label needs to be valid!';
-          }
-
-          if (value != passwordController.text) {
-            return 'Password mismatch!';
-          }
-        } else {
-          if (value!.isEmpty || value.length < 8) {
-            return '$label needs to be valid!';
-          }
-        }
-
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: hintText,
-        label: Text(label),
-        suffix: controller == passwordController
-            ? passwordController.text.isNotEmpty
-                ? GestureDetector(
-                    onTap: () => setState(() {
-                      isObscured = !isObscured;
-                    }),
-                    child: Icon(
-                      isObscured ? Icons.visibility : Icons.visibility_off,
-                    ),
-                  )
-                : const SizedBox.shrink()
-            : password2Controller.text.isNotEmpty
-                ? GestureDetector(
-                    onTap: () => setState(() {
-                      isObscured2 = !isObscured2;
-                    }),
-                    child: Icon(
-                      isObscured2 ? Icons.visibility : Icons.visibility_off,
-                    ),
-                  )
-                : const SizedBox.shrink(),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-    );
   }
 
   // elevated button
@@ -180,22 +122,28 @@ class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
               const SizedBox(height: 10),
               !isProcessing
                   ? Form(
+                      autovalidateMode: autoValidateMode,
                       key: formKey,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            kTextField(
+                            KTextField(
                               controller: passwordController,
                               hintText: 'Enter Password',
                               label: 'Password',
+                              field: Field.password,
+                              isObscured: isObscured,
                             ),
                             const SizedBox(height: 10),
-                            kTextField(
+                            KTextField(
                               controller: password2Controller,
                               hintText: 'Enter Confirm Password',
                               label: 'Confirm Password',
+                              field: Field.password2,
+                              isObscured: isObscured2,
+                              password: password2Controller.text.trim(),
                             ),
                             const SizedBox(height: 10),
                             kElevatedButton(

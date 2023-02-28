@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../../../../constants/enums/fields.dart';
+import '../../components/text_field.dart';
 import '../../widgets/loading.dart';
 import 'retrieve_password.dart';
 import '../../../../../../constants/constants.dart';
 import 'auth.dart';
+import 'package:validators/validators.dart';
+
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
@@ -14,38 +18,11 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final formKey = GlobalKey<FormState>();
+  AutovalidateMode autoValidateMode = AutovalidateMode.disabled;
   TextEditingController emailController = TextEditingController();
   bool isProcessing = false;
 
-  // textField
-  Widget kTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required String label,
-  }) {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      textInputAction: TextInputAction.done,
-      controller: controller,
-      validator: (value) {
-        if (value!.isEmpty ||
-            !value.contains('@') ||
-            !value.contains('.com') ||
-            value.length < 6) {
-          return '$label needs to be valid';
-        }
 
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: hintText,
-        label: Text(label),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-    );
-  }
 
   // elevated button
   Widget kElevatedButton({
@@ -130,16 +107,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               const SizedBox(height: 10),
               !isProcessing
                   ? Form(
+                autovalidateMode: autoValidateMode,
                       key: formKey,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            kTextField(
+                            KTextField(
                               controller: emailController,
                               hintText: 'Enter Email',
                               label: 'Email Address',
+                              field: Field.email
                             ),
                             const SizedBox(height: 10),
                             kElevatedButton(

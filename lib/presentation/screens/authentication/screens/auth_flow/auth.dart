@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../business_logic/authentication/signin_cubit/sign_in_cubit.dart';
-import '../../../../../constants/enums/signin_status.dart';
+import '../../../../../business_logic/authentication/cubits.dart';
+import '../../../../../constants/enums/auth_process_status.dart';
+import '../../../../../constants/enums/fields.dart';
 import '../../../../../data/models/auth/custom_error.dart';
+import '../../components/text_field.dart';
 import '../../widgets/loading.dart';
 import '../../../../../../constants/constants.dart';
 import '../../components/error_dialog.dart';
 import 'forgot_password.dart';
+import 'package:validators/validators.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key, this.isSignIn = true}) : super(key: key);
@@ -19,6 +22,7 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final formKey = GlobalKey<FormState>();
+  AutovalidateMode autoValidateMode = AutovalidateMode.disabled;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
@@ -36,67 +40,6 @@ class _AuthScreenState extends State<AuthScreen> {
       signInState = widget.isSignIn;
     });
     super.initState();
-  }
-
-  // textField
-  Widget kTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required String label,
-  }) {
-    return TextFormField(
-      keyboardType: controller == phoneController
-          ? TextInputType.phone
-          : TextInputType.text,
-      textInputAction: controller == passwordController
-          ? TextInputAction.done
-          : TextInputAction.next,
-      controller: controller,
-      obscureText: controller == passwordController ? isObscured : false,
-      validator: (value) {
-        if (controller == fullNameController) {
-          if (value!.isEmpty || value.length < 6) {
-            return '$label needs to be valid';
-          }
-        } else if (controller == phoneController) {
-          if (value!.isEmpty || value.length < 11) {
-            return '$label needs to be valid';
-          }
-        } else if (controller == emailController) {
-          if (value!.isEmpty ||
-              !value.contains('@') ||
-              !value.contains('.com') ||
-              value.length < 6) {
-            return '$label needs to be valid';
-          }
-        } else {
-          if (value!.isEmpty || value.length < 8) {
-            return '$label needs to be valid';
-          }
-        }
-
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: hintText,
-        label: Text(label),
-        suffix: controller == passwordController
-            ? passwordController.text.isNotEmpty
-                ? GestureDetector(
-                    onTap: () => setState(() {
-                      isObscured = !isObscured;
-                    }),
-                    child: Icon(
-                      isObscured ? Icons.visibility : Icons.visibility_off,
-                    ),
-                  )
-                : const SizedBox.shrink()
-            : const SizedBox.shrink(),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-    );
   }
 
   // elevated button
@@ -154,6 +97,12 @@ class _AuthScreenState extends State<AuthScreen> {
             email: emailController.text.trim(),
             password: passwordController.text.trim(),
           );
+    } else {
+      context.read<SignUpCubit>().signUp(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+            phone: phoneController.text.trim(),
+          );
     }
   }
 
@@ -170,7 +119,6 @@ class _AuthScreenState extends State<AuthScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,14 +126,30 @@ class _AuthScreenState extends State<AuthScreen> {
         child: SingleChildScrollView(
           child: MultiBlocListener(
             listeners: [
+              // signin blocListener
               BlocListener<SignInCubit, SignInState>(
                   listener: (context, state) {
-                if (state.signInStatus == SignInStatus.error) {
+                if (state.signInStatus == AuthProcessStatus.error) {
                   setState(() {
                     isProcessing = false;
                   });
-                  errorDialog(context:context, error:state.error);
-                } else if (state.signInStatus == SignInStatus.loading) {
+                  errorDialog(context: context, error: state.error);
+                } else if (state.signInStatus == AuthProcessStatus.loading) {
+                  setState(() {
+                    isProcessing = true;
+                  });
+                }
+              }),
+
+              // signup blocListener
+              BlocListener<SignUpCubit, SignUpState>(
+                  listener: (context, state) {
+                if (state.signUpStatus == AuthProcessStatus.error) {
+                  setState(() {
+                    isProcessing = false;
+                  });
+                  errorDialog(context: context, error: state.error);
+                } else if (state.signUpStatus == AuthProcessStatus.loading) {
                   setState(() {
                     isProcessing = true;
                   });
@@ -215,6 +179,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 const SizedBox(height: 10),
                 !isProcessing
                     ? Form(
+                        autovalidateMode: autoValidateMode,
                         key: formKey,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -223,23 +188,35 @@ class _AuthScreenState extends State<AuthScreen> {
                             children: [
                               signInState
                                   ? const SizedBox.shrink()
-                                  : kTextField(
+                                  : KTextField(
                                       controller: fullNameController,
                                       hintText: 'Enter Fullname',
                                       label: 'Fullname',
+                                      field: Field.fullname,
                                     ),
                               const SizedBox(height: 10),
-                              kTextField(
+                              KTextField(
                                 controller: emailController,
                                 hintText: 'Enter Email',
                                 label: 'Email Address',
+                                field: Field.email,
                               ),
                               const SizedBox(height: 10),
-                              kTextField(
-                                controller: passwordController,
-                                hintText: 'Enter Password',
-                                label: 'Password',
-                              ),
+                              signInState
+                                  ? const SizedBox.shrink()
+                                  : KTextField(
+                                      controller: phoneController,
+                                      hintText: 'Enter Phone Number',
+                                      label: 'Phone Number',
+                                      field: Field.phone,
+                                    ),
+                              const SizedBox(height: 10),
+                              KTextField(
+                                  controller: passwordController,
+                                  hintText: 'Enter Password',
+                                  label: 'Password',
+                                  field: Field.password,
+                                  isObscured: isObscured),
                               const SizedBox(height: 10),
                               kElevatedButton(
                                 action: submitFnc,

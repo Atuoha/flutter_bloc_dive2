@@ -9,9 +9,8 @@ class AuthRepository {
   final fbauth.FirebaseAuth firebaseAuth;
 
   AuthRepository({required this.firebaseFirestore, required this.firebaseAuth});
+
   Stream<fbauth.User?> get user => firebaseAuth.userChanges();
-
-
 
   // Sign up
   Future<void> signUp({
@@ -49,11 +48,14 @@ class AuthRepository {
   Future<void> signIn({required String email, required String password}) async {
     try {
       await firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
     } on fbauth.FirebaseAuthException catch (e) {
-      CustomError(code: e.code, errMsg: e.message!, plugin: e.plugin);
+      print('FROM REPO: Error occured ${e.message}');
+      throw CustomError(code: e.code, errMsg: e.message.toString(), plugin: e.plugin);
     } catch (e) {
-      CustomError(
+      throw CustomError(
         code: 'Exception',
         errMsg: e.toString(),
         plugin: 'firebase_exception/server_error',
@@ -88,9 +90,9 @@ class AuthRepository {
         'authType': 'GoogleAuth',
       });
     } on fbauth.FirebaseAuthException catch (e) {
-      CustomError(code: e.code, errMsg: e.message!, plugin: e.plugin);
+      throw CustomError(code: e.code, errMsg: e.message!, plugin: e.plugin);
     } catch (e) {
-      CustomError(
+      throw CustomError(
         code: 'Exception',
         errMsg: e.toString(),
         plugin: 'firebase_exception/server_error',
@@ -98,14 +100,12 @@ class AuthRepository {
     }
   }
 
-  
-
   // sign out
   Future<void> signOut() async {
     try {
       await firebaseAuth.signOut();
     } catch (e) {
-      CustomError(
+      throw CustomError(
         code: 'Exception',
         errMsg: e.toString(),
         plugin: 'firebase_exception/server_error',

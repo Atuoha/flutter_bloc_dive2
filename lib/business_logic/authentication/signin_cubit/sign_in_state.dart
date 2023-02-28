@@ -1,13 +1,13 @@
 part of 'sign_in_cubit.dart';
 
 class SignInState extends Equatable {
-  final SignInStatus signInStatus;
+  final AuthProcessStatus signInStatus;
   final CustomError error;
 
   const SignInState({required this.signInStatus, required this.error});
 
   factory SignInState.initial() => SignInState(
-        signInStatus: SignInStatus.initial,
+        signInStatus: AuthProcessStatus.initial,
         error: CustomError.initial(),
       );
 
@@ -19,7 +19,7 @@ class SignInState extends Equatable {
       'SignInState{signInStatus: $signInStatus, error: $error}';
 
   SignInState copyWith({
-    SignInStatus? signInStatus,
+    AuthProcessStatus? signInStatus,
     CustomError? error,
   }) {
     return SignInState(
