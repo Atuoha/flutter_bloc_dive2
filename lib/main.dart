@@ -86,6 +86,13 @@ class MyApp extends StatelessWidget {
             ),
           ),
 
+
+          BlocProvider(
+            create: (context) => GoogleAuthCubit(
+              authRepository: context.read<AuthRepository>(),
+            ),
+          ),
+
           //
           BlocProvider(
             create: (context) => CounterCubit(),

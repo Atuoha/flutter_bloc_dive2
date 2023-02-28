@@ -109,7 +109,7 @@ class _AuthScreenState extends State<AuthScreen> {
   // google authenticate
   void authenticate() {
     FocusScope.of(context).unfocus();
-    // todo handle google auth
+    context.read<GoogleAuthCubit>().authenticate();
   }
 
   // toggle isSignIn

@@ -53,7 +53,8 @@ class AuthRepository {
       );
     } on fbauth.FirebaseAuthException catch (e) {
       print('FROM REPO: Error occured ${e.message}');
-      throw CustomError(code: e.code, errMsg: e.message.toString(), plugin: e.plugin);
+      throw CustomError(
+          code: e.code, errMsg: e.message.toString(), plugin: e.plugin);
     } catch (e) {
       throw CustomError(
         code: 'Exception',
