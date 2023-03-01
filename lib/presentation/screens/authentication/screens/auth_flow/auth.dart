@@ -141,6 +141,21 @@ class _AuthScreenState extends State<AuthScreen> {
                 }
               }),
 
+              // google auth blocListener
+              BlocListener<GoogleAuthCubit, GoogleAuthState>(
+                  listener: (context, state) {
+                if (state.status == AuthProcessStatus.error) {
+                  setState(() {
+                    isProcessing = false;
+                  });
+                  errorDialog(context: context, error: state.error);
+                } else if (state.status == AuthProcessStatus.loading) {
+                  setState(() {
+                    isProcessing = true;
+                  });
+                }
+              }),
+
               // signup blocListener
               BlocListener<SignUpCubit, SignUpState>(
                   listener: (context, state) {
@@ -193,6 +208,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                       hintText: 'Enter Fullname',
                                       label: 'Fullname',
                                       field: Field.fullname,
+                                      prefixIcon: Icons.account_box,
                                     ),
                               const SizedBox(height: 10),
                               KTextField(
@@ -200,6 +216,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 hintText: 'Enter Email',
                                 label: 'Email Address',
                                 field: Field.email,
+                                prefixIcon: Icons.email,
                               ),
                               const SizedBox(height: 10),
                               signInState
@@ -209,14 +226,17 @@ class _AuthScreenState extends State<AuthScreen> {
                                       hintText: 'Enter Phone Number',
                                       label: 'Phone Number',
                                       field: Field.phone,
+                                      prefixIcon: Icons.phone,
                                     ),
                               const SizedBox(height: 10),
                               KTextField(
-                                  controller: passwordController,
-                                  hintText: 'Enter Password',
-                                  label: 'Password',
-                                  field: Field.password,
-                                  isObscured: isObscured),
+                                controller: passwordController,
+                                hintText: 'Enter Password',
+                                label: 'Password',
+                                field: Field.password,
+                                isObscured: isObscured,
+                                prefixIcon: Icons.lock,
+                              ),
                               const SizedBox(height: 10),
                               kElevatedButton(
                                 action: submitFnc,

@@ -6,6 +6,8 @@ import 'package:flutter_bloc_dive2/presentation/screens/weather/using_cubit/weat
 import '../screens/authentication/screens/auth_flow/auth_entry.dart';
 import '../screens/authentication/screens/auth_flow/auth.dart';
 import '../screens/authentication/screens/home.dart';
+import '../screens/authentication/screens/profile/view_profile.dart';
+import '../screens/authentication/screens/settings.dart';
 import '../screens/authentication/splash_entry.dart';
 import '../screens/event_transformer/event_transformer.dart';
 import '../screens/homescreen.dart';
@@ -109,8 +111,6 @@ class RouteManager {
           builder: (context) => const SettingsScreenBloc(),
         );
 
-
-
       //  authentication
       case SplashEntry.routeName:
         return MaterialPageRoute(
@@ -140,6 +140,16 @@ class RouteManager {
       case AuthHomeScreen.routeName:
         return MaterialPageRoute(
           builder: (context) => const AuthHomeScreen(),
+        );
+
+      case ProfileScreen.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const ProfileScreen(),
+        );
+
+      case SettingsScreen.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const SettingsScreen(),
         );
     }
     return null;

@@ -118,7 +118,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               controller: emailController,
                               hintText: 'Enter Email',
                               label: 'Email Address',
-                              field: Field.email
+                              field: Field.email,
+                              prefixIcon: Icons.email,
                             ),
                             const SizedBox(height: 10),
                             kElevatedButton(

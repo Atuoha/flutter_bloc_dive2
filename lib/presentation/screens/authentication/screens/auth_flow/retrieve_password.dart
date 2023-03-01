@@ -135,6 +135,7 @@ class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
                               label: 'Password',
                               field: Field.password,
                               isObscured: isObscured,
+                              prefixIcon: Icons.lock,
                             ),
                             const SizedBox(height: 10),
                             KTextField(
@@ -144,6 +145,7 @@ class _RetrievePasswordScreenState extends State<RetrievePasswordScreen> {
                               field: Field.password2,
                               isObscured: isObscured2,
                               password: password2Controller.text.trim(),
+                              prefixIcon: Icons.lock,
                             ),
                             const SizedBox(height: 10),
                             kElevatedButton(

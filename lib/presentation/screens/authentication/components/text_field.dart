@@ -11,6 +11,7 @@ class KTextField extends StatefulWidget {
     required this.label,
     required this.field,
     this.password = '',
+    required this.prefixIcon,
   }) : super(key: key);
   final TextEditingController controller;
   final String hintText;
@@ -18,8 +19,7 @@ class KTextField extends StatefulWidget {
   final Field field;
   bool? isObscured;
   String? password;
-
-
+  final IconData prefixIcon;
 
   @override
   State<KTextField> createState() => _TextFieldState();
@@ -77,12 +77,13 @@ class _TextFieldState extends State<KTextField> {
 
         return null;
       },
-      onSaved: (value) {
-        widget.controller.text = value!;
-      },
+      // onSaved: (value) {
+      //   widget.controller.text = value!;
+      // },
       decoration: InputDecoration(
         hintText: widget.hintText,
         label: Text(widget.label),
+        prefixIcon: Icon(widget.prefixIcon),
         suffix: widget.field == Field.password
             ? widget.controller.text.isNotEmpty
                 ? GestureDetector(
