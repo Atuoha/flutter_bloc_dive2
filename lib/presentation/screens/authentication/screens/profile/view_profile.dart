@@ -55,15 +55,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return const SizedBox.shrink();
           }
           if (state.status == ProcessStatus.loading) {
-            return const LoadingWidget();
+            return const Center(child: LoadingWidget());
           }
-          return Column(
-            children: [
-              Image.network(''),
-            ],
+
+          if (state.status == ProcessStatus.error) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Image.asset('assets/images/error3.gif'),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'Opps! Error occurred, try again',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
+            );
+          }
+          return Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                Center(
+                  child: CircleAvatar(
+                    radius: 60,
+                    backgroundImage: NetworkImage(state.user.profileImg),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                buildWrap(title: 'Fullname', data: state.user.fullname),
+                buildWrap(title: 'Email', data: state.user.email),
+                buildWrap(title: 'Phone Number', data: state.user.phone),
+                buildWrap(title: 'Rank', data: state.user.rank),
+                buildWrap(title: 'Points', data: '${state.user.point} points'),
+              ],
+            ),
           );
         },
       ),
+    );
+  }
+
+  ListTile buildWrap({required String title, required String data}) {
+    return ListTile(
+      trailing: const Icon(Icons.chevron_right),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      subtitle: Text(data),
     );
   }
 }

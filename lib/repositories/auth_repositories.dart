@@ -14,6 +14,7 @@ class AuthRepository {
 
   // Sign up
   Future<void> signUp({
+    required String fullname,
     required String email,
     required String phone,
     required String password,
@@ -27,6 +28,7 @@ class AuthRepository {
 
       await userRef.doc(credential.user!.uid).set({
         'id': credential.user!.uid,
+        'fullname':fullname,
         'email': email,
         'phone': phone,
         'profileImg': 'https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0=',
@@ -52,7 +54,6 @@ class AuthRepository {
         password: password,
       );
     } on fbauth.FirebaseAuthException catch (e) {
-      print('FROM REPO: Error occured ${e.message}');
       throw CustomError(
           code: e.code, errMsg: e.message.toString(), plugin: e.plugin);
     } catch (e) {
@@ -82,9 +83,10 @@ class AuthRepository {
       final user = logCredentials.user;
 
       userRef.doc(user!.uid).set({
-        'id': user.displayName,
+        'id': user.uid,
         'email': user.email,
-        'phone': user.phoneNumber,
+        'fullname':user.displayName,
+        'phone': user.phoneNumber?? 'Not yet defined',
         'profileImg': user.photoURL,
         'point': 0,
         'rank': 'bronze',

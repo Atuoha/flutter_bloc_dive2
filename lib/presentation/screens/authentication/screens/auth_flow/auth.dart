@@ -99,6 +99,7 @@ class _AuthScreenState extends State<AuthScreen> {
           );
     } else {
       context.read<SignUpCubit>().signUp(
+        fullname: fullNameController.text.trim(),
             email: emailController.text.trim(),
             password: passwordController.text.trim(),
             phone: phoneController.text.trim(),

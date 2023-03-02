@@ -13,6 +13,7 @@ class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit({required this.authRepository}) : super(SignUpState.initial());
 
   Future<void> signUp({
+    required String fullname,
     required String email,
     required String password,
     required String phone,
@@ -21,7 +22,7 @@ class SignUpCubit extends Cubit<SignUpState> {
 
     try {
       await authRepository.signUp(
-          email: email, phone: phone, password: password);
+          email: email, phone: phone, password: password, fullname:fullname,);
       emit(state.copyWith(signUpStatus: ProcessStatus.success));
     } on CustomError catch (e) {
       emit(state.copyWith(signUpStatus: ProcessStatus.error, error: e));

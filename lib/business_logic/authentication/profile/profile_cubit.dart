@@ -18,7 +18,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(state.copyWith(status: ProcessStatus.loading));
 
     try {
-     final user = await  profileRepository.getProfile(uId: uId);
+      final user = await profileRepository.getProfile(uId: uId);
       emit(state.copyWith(status: ProcessStatus.success, user: user));
     } on CustomError catch (e) {
       emit(state.copyWith(status: ProcessStatus.error, error: e));
