@@ -1,13 +1,13 @@
 part of 'google_auth_cubit.dart';
 
 class GoogleAuthState extends Equatable {
-  final AuthProcessStatus status;
+  final ProcessStatus status;
   final CustomError error;
 
   const GoogleAuthState({required this.status, required this.error});
 
   factory GoogleAuthState.initial() => GoogleAuthState(
-        status: AuthProcessStatus.initial,
+        status: ProcessStatus.initial,
         error: CustomError.initial(),
       );
 
@@ -20,7 +20,7 @@ class GoogleAuthState extends Equatable {
   }
 
   GoogleAuthState copyWith({
-    AuthProcessStatus? status,
+    ProcessStatus? status,
     CustomError? error,
   }) {
     return GoogleAuthState(

@@ -11,10 +11,12 @@ import 'package:flutter_bloc_dive2/business_logic/cubits/counter/counter_cubit.d
 import 'package:flutter_bloc_dive2/business_logic/weather/bloc/blocs.dart';
 import 'package:flutter_bloc_dive2/presentation/routes/route_manager.dart';
 import 'package:flutter_bloc_dive2/repositories/auth_repositories.dart';
+import 'package:flutter_bloc_dive2/repositories/profile_repositories.dart';
 import 'package:flutter_bloc_dive2/repositories/weather_repository.dart';
 import 'package:flutter_bloc_dive2/services/weather_api_services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'business_logic/authentication/cubits.dart';
+import 'business_logic/authentication/profile/profile_cubit.dart';
 import 'business_logic/bloc/color/color_bloc.dart';
 import 'business_logic/bloc/counter_for_color/counter_color_bloc.dart';
 import 'business_logic/bloc/hydrated_bloc/counter/hyd_counter_bloc.dart';
@@ -63,6 +65,11 @@ class MyApp extends StatelessWidget {
             firebaseFirestore: FirebaseFirestore.instance,
             firebaseAuth: FirebaseAuth.instance,
           ),
+        ),
+        RepositoryProvider<ProfileRepository>(
+          create: (context) => ProfileRepository(
+            firebaseFirestore: FirebaseFirestore.instance,
+          ),
         )
       ],
       child: MultiBlocProvider(
@@ -86,12 +93,18 @@ class MyApp extends StatelessWidget {
             ),
           ),
 
-
           BlocProvider(
             create: (context) => GoogleAuthCubit(
               authRepository: context.read<AuthRepository>(),
             ),
           ),
+
+          BlocProvider(
+            create: (context) => ProfileCubit(
+              profileRepository: context.read<ProfileRepository>(),
+            ),
+          ),
+
 
           //
           BlocProvider(

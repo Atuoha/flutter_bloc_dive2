@@ -1,17 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
+import '../constants/constants.dart';
 import '../data/models/auth/custom_error.dart';
+import '../data/models/auth/user.dart';
 
 class ProfileRepository {
   final FirebaseFirestore firebaseFirestore;
 
   ProfileRepository({required this.firebaseFirestore});
 
-  Future<void> getProfile({required String uId}) async {
+  Future<User> getProfile({required String uId}) async {
     try {
-      firebaseFirestore.collection('users').doc(uId);
-    } on FirebaseAuthException catch (e) {
+      final DocumentSnapshot userDoc = await userRef.doc(uId).get();
+
+      if(userDoc.exists){
+        final currentUser = User.fromDoc(userDoc);
+        return currentUser;
+      }
+      throw 'User not found';
+    } on FirebaseException catch (e) {
       throw CustomError(
           code: e.code, errMsg: e.message.toString(), plugin: e.plugin);
     } catch (e) {

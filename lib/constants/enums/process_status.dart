@@ -1,4 +1,4 @@
-enum AuthProcessStatus {
+enum ProcessStatus {
   initial,
   loading,
   success,

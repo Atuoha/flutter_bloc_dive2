@@ -1,11 +1,11 @@
 part of 'sign_up_cubit.dart';
 
  class SignUpState extends Equatable {
-  final AuthProcessStatus signUpStatus;
+  final ProcessStatus signUpStatus;
   final CustomError error;
   const SignUpState({required this.signUpStatus, required this.error});
 
-  factory SignUpState.initial()=> SignUpState(signUpStatus: AuthProcessStatus.initial, error: CustomError.initial());
+  factory SignUpState.initial()=> SignUpState(signUpStatus: ProcessStatus.initial, error: CustomError.initial());
 
   @override
   List<Object> get props => [signUpStatus,error];
@@ -16,7 +16,7 @@ part of 'sign_up_cubit.dart';
   }
 
   SignUpState copyWith({
-    AuthProcessStatus? signUpStatus,
+    ProcessStatus? signUpStatus,
     CustomError? error,
   }) {
     return SignUpState(

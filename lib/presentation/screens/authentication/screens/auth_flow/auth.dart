@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../business_logic/authentication/cubits.dart';
-import '../../../../../constants/enums/auth_process_status.dart';
+import '../../../../../constants/enums/process_status.dart';
 import '../../../../../constants/enums/fields.dart';
 import '../../../../../data/models/auth/custom_error.dart';
 import '../../components/text_field.dart';
@@ -129,12 +129,12 @@ class _AuthScreenState extends State<AuthScreen> {
               // signin blocListener
               BlocListener<SignInCubit, SignInState>(
                   listener: (context, state) {
-                if (state.signInStatus == AuthProcessStatus.error) {
+                if (state.signInStatus == ProcessStatus.error) {
                   setState(() {
                     isProcessing = false;
                   });
                   errorDialog(context: context, error: state.error);
-                } else if (state.signInStatus == AuthProcessStatus.loading) {
+                } else if (state.signInStatus == ProcessStatus.loading) {
                   setState(() {
                     isProcessing = true;
                   });
@@ -144,12 +144,12 @@ class _AuthScreenState extends State<AuthScreen> {
               // google auth blocListener
               BlocListener<GoogleAuthCubit, GoogleAuthState>(
                   listener: (context, state) {
-                if (state.status == AuthProcessStatus.error) {
+                if (state.status == ProcessStatus.error) {
                   setState(() {
                     isProcessing = false;
                   });
                   errorDialog(context: context, error: state.error);
-                } else if (state.status == AuthProcessStatus.loading) {
+                } else if (state.status == ProcessStatus.loading) {
                   setState(() {
                     isProcessing = true;
                   });
@@ -159,12 +159,12 @@ class _AuthScreenState extends State<AuthScreen> {
               // signup blocListener
               BlocListener<SignUpCubit, SignUpState>(
                   listener: (context, state) {
-                if (state.signUpStatus == AuthProcessStatus.error) {
+                if (state.signUpStatus == ProcessStatus.error) {
                   setState(() {
                     isProcessing = false;
                   });
                   errorDialog(context: context, error: state.error);
-                } else if (state.signUpStatus == AuthProcessStatus.loading) {
+                } else if (state.signUpStatus == ProcessStatus.loading) {
                   setState(() {
                     isProcessing = true;
                   });

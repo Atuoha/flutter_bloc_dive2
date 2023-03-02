@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc_dive2/constants/enums/auth_process_status.dart';
+import 'package:flutter_bloc_dive2/constants/enums/process_status.dart';
 
 import '../../../data/models/auth/custom_error.dart';
 import '../../../repositories/auth_repositories.dart';
@@ -17,14 +17,14 @@ class SignUpCubit extends Cubit<SignUpState> {
     required String password,
     required String phone,
   }) async {
-    emit(state.copyWith(signUpStatus: AuthProcessStatus.loading));
+    emit(state.copyWith(signUpStatus: ProcessStatus.loading));
 
     try {
       await authRepository.signUp(
           email: email, phone: phone, password: password);
-      emit(state.copyWith(signUpStatus: AuthProcessStatus.success));
+      emit(state.copyWith(signUpStatus: ProcessStatus.success));
     } on CustomError catch (e) {
-      emit(state.copyWith(signUpStatus: AuthProcessStatus.error, error: e));
+      emit(state.copyWith(signUpStatus: ProcessStatus.error, error: e));
     }
   }
 }

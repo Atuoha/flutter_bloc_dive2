@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../constants/enums/auth_process_status.dart';
+import '../../../constants/enums/process_status.dart';
 import '../../../data/models/auth/custom_error.dart';
 import '../../../repositories/auth_repositories.dart';
 
@@ -14,12 +14,12 @@ class GoogleAuthCubit extends Cubit<GoogleAuthState> {
       : super(GoogleAuthState.initial());
 
   Future<void> authenticate() async {
-    emit(state.copyWith(status: AuthProcessStatus.loading));
+    emit(state.copyWith(status: ProcessStatus.loading));
     try {
       await authRepository.googleAuthenticate();
-      emit(state.copyWith(status: AuthProcessStatus.success));
+      emit(state.copyWith(status: ProcessStatus.success));
     } on CustomError catch (e) {
-      emit(state.copyWith(status: AuthProcessStatus.error, error: e));
+      emit(state.copyWith(status: ProcessStatus.error, error: e));
     }
   }
 }
