@@ -1,6 +1,6 @@
 part of 'hyd_theme_bloc.dart';
 
-@immutable
+// @immutable
 class HydThemeEvent extends Equatable {
   @override
   List<Object?> get props => [];

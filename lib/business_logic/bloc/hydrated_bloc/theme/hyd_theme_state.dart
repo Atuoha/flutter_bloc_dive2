@@ -9,7 +9,7 @@ enum AppThemed {
   static AppThemed fromJson(String json) => values.byName(json);
 }
 
-@immutable
+// @immutable
 class HydThemeState extends Equatable {
   final AppThemed theme;
 

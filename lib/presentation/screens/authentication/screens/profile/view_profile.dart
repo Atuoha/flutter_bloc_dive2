@@ -6,6 +6,7 @@ import 'package:flutter_bloc_dive2/presentation/screens/authentication/screens/s
 
 import '../../../../../business_logic/authentication/auth/auth_bloc.dart';
 import '../../../../../business_logic/authentication/profile/profile_cubit.dart';
+import '../../../../../constants/constants.dart';
 import '../../../../../constants/enums/process_status.dart';
 import '../../../weather/using_bloc/components/error_dialog.dart';
 import '../../widgets/loading.dart';
@@ -86,6 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Center(
                   child: CircleAvatar(
+                    backgroundColor: primaryColor,
                     radius: 60,
                     backgroundImage: NetworkImage(state.user.profileImg),
                   ),

@@ -7,10 +7,6 @@ import '../../../business_logic/authentication/auth/auth_bloc.dart';
 import 'widgets/loading.dart';
 import 'package:flutter_bloc_dive2/constants/enums/auth_status.dart';
 
-
-
-
-
 class SplashEntry extends StatefulWidget {
   const SplashEntry({Key? key}) : super(key: key);
   static const routeName = '/splash_entry';
@@ -34,7 +30,13 @@ class _SplashEntryState extends State<SplashEntry> {
           } else {
             // authenticated
             Timer(const Duration(seconds: 10), () {
-              Navigator.of(context).pushNamed(AuthHomeScreen.routeName);
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(AuthHomeScreen.routeName, (route) {
+                return route.settings.name ==
+                        ModalRoute.of(context)!.settings.name
+                    ? true
+                    : false;
+              });
             });
           }
         },
